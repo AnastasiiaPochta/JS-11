@@ -79,17 +79,17 @@
 
 
 
-//String: youtube - не працює(
+//String: youtube
 
-// const youtubeLinkRegex = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/;
+// const youtubeLinkRegex = /http(?:s)?:\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?[\w\?\=]*)?/;
 // const inputText = prompt("Введіть текст з посиланням на YouTube");
 // const match = inputText.match(youtubeLinkRegex);
 // if (match) {
-// const videoId = match[1];
-// const embedCode = '<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0"</iframe>';
-// document.write(embedCode);
+//   const videoId = match[1];
+//   const embedCode = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0"</iframe>`;
+//   document.write(embedCode);
 // } else {
-// document.write("Посилання на YouTube не знайдено.");
+//   document.write("Посилання на YouTube не знайдено.");
 // }
 
 
