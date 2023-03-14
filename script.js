@@ -1,79 +1,101 @@
-//assign: evaluation
+//String: greeting
 
-// var a = 5;  
-// var b, c;
-// b = ((a) * (5)); //додала більше дужок
-// console.log(b); //працює так само
-// b = ((c) = (b/2)); //додала більше дужок
-// console.log(b); //працює так само
-// console.log(c); //працює так само
-// b = a * 5; //забрала дужки
-// console.log(b); //працює так само
-// b = c = b/2; //забрала дужки
-// console.log(b); //працює так само
-// console.log(c); //працює так само
-// b = c = (b/2); //переставила дужки - так теж буде працювати
+// const name = prompt("What's your name?");
+// alert (`Hello, ${name}!`);
 
 
-//Number: age
 
-// const age = prompt("How old are you?");
-// const currentYear = 2023;
-// let yearOfBirth = (currentYear - age);
-// alert ("You probably was born in " + yearOfBirth);
+//String: gopni4ek
 
-
-//Number: temperature
-
-// const celsius = prompt("Enter the temperature in Celsius");
-// let fahrenheit = celsius * (9/5) + 32;
-// alert ("The tempeature in Fahrenheit is " + fahrenheit);
+// const str = prompt("Input your text here");
+// const lines = str.split(',').join(', блін');
+// alert (lines);
 
 
-//Number: divide
 
-// const firstNum = prompt("Enter the first number");
-// const secondNum = prompt("Enter the second number");
-// let result = Math.floor(firstNum/secondNum);
-// alert ("Result: " + result);
+//String: capitalize
 
-
-//Number: currency
-
-// const uah = prompt("How much UAH do you want to convert to USD?");
-// const rate = 40;
-// let usd = (uah/rate).toFixed(2);
-// alert ("You receive " + usd + " USD");
+// const str = prompt("ВвЕдіть щоСь дУжЕ крИвО");
+// const result = str.slice(0, 1).toUpperCase()+str.slice(1).toLowerCase();
+// alert(result);
 
 
-//Number: RGB
 
-// const red = + prompt ("Input your number for Red");
-// const green = + prompt ("Input your number for Green");
-// const blue = + prompt ("Input your number for Blue");
-// let rgb = (red).toString(16) + (green).toString(16) + (blue).toString(16);
-// if (blue < 16) alert ("Unable to proceed, pls start from number 16");
-// else if (green < 16) alert ("Unable to proceed, pls start from number 16");
-// else if (red < 16) alert ("Unable to proceed, pls start from number 16");
-// else alert ("Color: " + "#" + rgb);
+//String: word count
+
+// const str = prompt("Введіть рядок, щоб порахувати кількість слів в ньому");
+// const wordsArr = str.split(' ');
+// alert (`В цьому рядку ${wordsArr.length} слів.`);
 
 
-//Number: flats
 
-// const floors = prompt ("How many floors does the building have?");
-// const flats = prompt ("How many flats are there on the floor?");
-// const flatNum = prompt ("Which apartment do you need to find?");
-// if (flatNum <= floors * flats) {
-//     const entranceNum = 1;
-//     const floorNum = Math.ceil( flatNum / flats);
-//     alert(`Entrance: ${entranceNum}, Floor: ${floorNum}`);
+//String: credentials
+
+// const lastName = prompt("Введіть Ваше прізвище").trim();
+// const name = prompt("Введіть Ваше ім'я").trim();
+// const pobatkovi = prompt("Введіть По-батькові").trim();
+// const correctLastNane = lastName.slice(0, 1).toUpperCase() + lastName.slice(1).toLowerCase();
+// const correctName = name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
+// const correctPobatkovi = pobatkovi.slice(0, 1).toUpperCase() + pobatkovi.slice(1).toLowerCase();
+// const fullName = `${correctLastNane} ${correctName} ${correctPobatkovi}`;
+// alert (fullName);
+
+
+
+//String: beer
+
+// const str = "Було жарко. Василь пив пиво вприкуску з креветками.";
+// const index = str.indexOf('пиво');
+// const result = `${str.slice(0, index)}чай${str.slice(index + 4)}`;
+// alert(result);
+
+
+
+//String: no tag
+
+// const str = prompt("Введіть рядок");
+// const indexOne = str.indexOf('<');
+// const indexTwo = str.indexOf('>');
+// const result = `${str.slice(0, indexOne)}${str.slice(indexTwo + 2)}`; //Додала 2 щоб не включити останній символ тегу > та зайвий пробіл.
+// alert (result);
+
+
+
+//String: big tag
+
+// const str = prompt("Введіть рядок");
+// const indexOne = str.indexOf('<');
+// const indexTwo = str.indexOf('>');
+// const result = `${str.slice(0, indexOne)}${str.slice(indexOne, indexTwo + 1).toUpperCase()}${str.slice(indexTwo + 1)}`;
+// alert (result);
+
+
+
+//String: new line
+
+// const str = prompt("Введіть багаторядковий рядок. Ви можете вводити '\\n' як маркер нового рядка.");
+// const result = str.split('\\n').join('\n');
+// console.log (result);
+
+
+
+//String: youtube - не працює(
+
+// const youtubeLinkRegex = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/;
+// const inputText = prompt("Введіть текст з посиланням на YouTube");
+// const match = inputText.match(youtubeLinkRegex);
+// if (match) {
+// const videoId = match[1];
+// const embedCode = '<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0"</iframe>';
+// document.write(embedCode);
+// } else {
+// document.write("Посилання на YouTube не знайдено.");
 // }
-// else {
-//     const entranceNum = Math.ceil(flatNum/(floors * flats));
-//     const flatNumInEntrance = flatNum - (entranceNum - 1) * (floors * flats);
-//     const floorNum = Math.ceil(flatNumInEntrance / flats);
-//     alert(`Entrance: ${entranceNum}, Floor: ${floorNum}`);
-// }
+
+
+
+
+
 
 
 
