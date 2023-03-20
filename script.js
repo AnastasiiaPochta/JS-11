@@ -136,7 +136,9 @@
 
 // Array Equals
 
-// Це неможливо зробити так як в JavaScript порівняння масивів за допомогою оператора === порівнює посилання на об'єкти, а не їхній вміст.
+// const arr1 = [1,2,3];
+// const arr2 = arr1;
+// arr2 === arr1; //true, оскільки це посилання на один і той же масив
 
 
 
@@ -149,7 +151,6 @@
 //     [0, 3, 6, 9, 12],
 //     [0, 4, 8, 12, 16]
 // ];
-
 // const flatArr = [...arr[0], ...arr[1], ...arr[2], ...arr[3], ...arr[4]];
 // console.log(flatArr);
 
@@ -173,7 +174,105 @@
 
 //Multiply table rest  
 
+// const arr = [
+//     [0, 0, 0, 0, 0],
+//     [0, 1, 2, 3, 4],
+//     [0, 2, 4, 6, 8],
+//     [0, 3, 6, 9, 12],
+//     [0, 4, 8, 12, 16]
+// ];
+// const [a, ...rest] = arr;
+// const [[b,...rest1], [c, ...rest2], [d, ...rest3], [e, ...rest4]] = rest;
+// const newArr = [rest1, rest2, rest3, rest4];
+// console.log(newArr);
 
 
 
+//For Alert
 
+// const names = ["John", "Paul", "George", "Ringo"];
+// for (const name of names) {
+//     alert(`${name}`)
+// }
+
+
+
+//For Select Option
+
+// const currencies = ["USD", "EUR", "GBP", "UAH"];
+// let  str = "<select>";
+// for (const currency of currencies){
+//     str += `<option>${currency}</option>`;
+// }
+// str+= "</select>";
+// document.write(str);
+
+
+
+//For Table Horizontal
+
+// const names = ["John", "Paul", "George", "Ringo"]
+// let str = "<table><tr>";
+// for (const name of names){
+//     str+= `<td>${name}</td>`
+// }
+// str+= "</tr></table>";
+// document.write(str);
+
+
+
+//For Table Vertical
+
+// const names = ["John", "Paul", "George", "Ringo"]
+// let str = "<table>";
+// for (const name of names){
+//     str+= `<tr><td>${name}</td></tr>`;
+// }
+// str+= "</table>";
+// document.write(str);
+
+
+
+//For Table Letters
+
+// const currencies = ["USD", "EUR", "GBP", "UAH"];
+// let str = "<table>";
+// for (const currency of currencies){
+//     str+= `<tr></tr>`;
+//     for (const letter of currency){
+//         str+= `<td>${letter}</td>`;
+//     }
+// }
+// str+= "</table>";
+// document.write(str);
+
+
+
+//For Multiply Table
+
+// const arr = [
+//     [0, 0, 0, 0, 0],
+//     [0, 1, 2, 3, 4],
+//     [0, 2, 4, 6, 8],
+//     [0, 3, 6, 9, 12],
+//     [0, 4, 8, 12, 16]
+// ];
+// let str = "<table>";
+// for (const number of arr){
+//     str+= `<tr></tr>`;
+//     for (const num of number){
+//         str+= `<td>${num}</td>`;
+//     }
+// }
+// str+= "</table>";
+// document.write(str);
+
+
+
+//Function Capitalize
+
+// const capitalize = str => {
+//     let result = str.slice(0, 1).toUpperCase()+str.slice(1).toLowerCase();
+//     return result;
+// }
+// console.log(capitalize("cANBerRa"));
