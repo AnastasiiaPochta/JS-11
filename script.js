@@ -38,3 +38,68 @@
 //     ...persik
 // }
 // console.log(obj);
+
+
+
+//Html tree
+
+// const body = {
+//     tagName: 'body',
+//     children: [
+//         {
+//             tagName: 'div',
+//             children: [
+//                 {
+//                     tagName: 'span',
+//                     children: ['Enter a data please:']
+//                 },
+//                 {
+//                     tagName: 'br',
+//                 },
+//                 {
+//                     tagName: 'input',
+//                     attrs: {
+//                         type: 'text',
+//                         id: 'name'
+//                     },
+//                 },
+//                 {
+//                     tagName: 'input',
+//                     attrs: {
+//                         type: 'text',
+//                         id: 'surname'
+//                     },
+//                 }
+//             ]
+//         },
+//         {
+//             tagName: 'div',
+//             children: [
+//                 {
+//                     tagName: 'button',
+//                     attrs: {
+//                         id: 'ok'
+//                     },
+//                     children: ['OK']
+//                 },
+//                 {
+//                     tagName: 'button',
+//                     attrs: {
+//                         id: 'cancel'
+//                     },
+//                     children: ['Cancel']
+//                 }
+//             ]
+//         }
+//     ],
+// }
+
+// const cancelButton = body.children[1].children[1].children[0];
+// console.log(cancelButton);
+// const idInput = body.children[0].children[3].attrs.id;
+// console.log(idInput);
+
+
+
+//Parent
+
