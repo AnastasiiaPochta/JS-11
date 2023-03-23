@@ -181,8 +181,7 @@
 //     [0, 3, 6, 9, 12],
 //     [0, 4, 8, 12, 16]
 // ];
-// const [a, ...rest] = arr;
-// const [[b,...rest1], [c, ...rest2], [d, ...rest3], [e, ...rest4]] = rest;
+// const [,[, ...rest1], [, ...rest2], [, ...rest3], [, ...rest4]] = arr;
 // const newArr = [rest1, rest2, rest3, rest4];
 // console.log(newArr);
 
