@@ -103,3 +103,74 @@
 
 //Parent
 
+// for (const child of body.children) {
+//   child.parent = body;
+//   if (child.children) {
+//     for (const grandchild of child.children) {
+//       grandchild.parent = child;
+//       if (grandchild.children) {
+//         for (const newchild of grandchild.children) {
+//           newchild.parent = grandchild;
+//         }
+//       }
+//     }
+//   }
+// }
+// console.log(body);
+
+
+
+//Change OK
+
+// body.children[1].children[0].attrs[prompt('Введіть нову назву атрибута')] = prompt('Введіть нове значення для атрибута');
+// console.log(body.children[1].children[0]);
+
+
+
+//Destructure
+
+// const {
+//     children: [
+//         {
+//             children: [
+//                 {
+//                     children: [spanText]
+//                 }
+//             ]
+//         }
+//     ]
+// } = body;
+// console.log(spanText);
+
+// const {
+//     children: [
+//         ,
+//         {
+//             children: [
+//                 ,
+//                 {
+//                     children: [buttonText],
+//                 }
+//             ]
+//         }
+//     ]
+// } = body;
+// console.log(buttonText);
+
+// const {
+//     children: [
+//         {
+//             children: [
+//                 ,
+//                 ,
+//                 ,
+//                 {
+//                     attrs: {
+//                         id: idAttr,
+//                     }
+//                 }
+//             ]
+//         }
+//     ]
+// } = body;
+// console.log(idAttr);
