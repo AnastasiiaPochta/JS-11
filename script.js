@@ -316,13 +316,17 @@
 // }
 
 // let str = `<form><fieldset><legend>${car.Name}</legend>`;
+
 // for (const key in car) {
 //     const type = typeof car[key];
 //     if (type === "boolean") {
 //         const check = car[key] ? "checked" : "";
 //         str += `<p><label> ${key}: <input type = "checkbox" ${check}/></label></p>`;
-//     } else {
+//     } else if (type === "number") {
 //         str += `<p><label> ${key}: <input type = "${type}" value = "${car[key]}"/></label></p>`;
+//     }
+//     else {
+//         str += `<p><label> ${key}: <input type = "text" value = "${car[key]}"/></label></p>`;
 //     }
 // }
 // str += "</fieldset></form>";
