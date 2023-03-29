@@ -174,3 +174,161 @@
 //     ]
 // } = body;
 // console.log(idAttr);
+
+
+
+//Destruct array
+
+// const arr = [1,2,3,4,5, "a", "b", "c"];
+// const [odd1, even1, odd2, even2, odd3,...letters] = arr;
+
+// console.log(odd2);
+// console.log(even2);
+// console.log(letters);
+
+
+
+//Destruct string
+
+// const arr = [1, "abc"];
+// const [number, [s1, s2, s3]] = arr;
+
+// console.log(s3);
+// console.log(number);
+
+
+
+//Destruct 2
+
+// const obj = {
+//     name: 'Ivan',
+//     surname: 'Petrov',
+//     children: [{ name: 'Maria' }, { name: 'Nikolay' }]
+// };
+
+// const {
+//     children: [{name: name1 }, { name: name2}]
+// } = obj;
+
+// console.log(`${name1}, ${name2}`);
+
+
+
+//Destruct 3
+
+// const arr = [1, 2, 3, 4, 5, 6, 7, 10];
+// const {0: a, 1: b, length} = arr;
+
+// console.log(a, b);
+// console.log(length);
+
+
+
+//Copy delete
+
+// const persik = {
+//     color: 'рижий',
+//     weight: '5 kg',
+//     height: '40 см',
+//     eyeColor: 'brown',
+//     apetit: 'черезчур хороший'
+// }
+
+// const { [prompt('Введіть ключ, який необхідно видалити')]: deletedKey, ...copyPersik } = persik;
+// console.log(copyPersik);
+
+
+
+//Currency real rate
+
+// fetch('https://open.er-api.com/v6/latest/USD').then(res => res.json())
+//     .then(data => {
+//         const rates = data.rates;
+//         const curr = prompt('Введіть назву вхідної валюти у форматі USD, EUR, UAH і т.д.').toUpperCase();
+//         const currExchange = prompt('Введіть валюту в яку відбувається конвертація у форматі USD, EUR, UAH і т.д.').toUpperCase();
+//         const sum = + prompt('Введіть суму у вхідній валюті');
+//         if (rates[curr] && rates[currExchange]) {
+//             const result = (sum * (rates[currExchange] / rates[curr])).toFixed(2);
+//             alert(`Ви отримаєте ${result} ${currExchange}`);
+//         } else {
+//             alert('Ви ввели якусь дичину замість назви валюти, спробуйте ще раз');
+//         }
+//     })
+
+
+
+//Currency drop down
+
+// fetch('https://open.er-api.com/v6/latest/USD').then(res => res.json())
+//     .then(data => {
+//         const rates = data.rates;
+//         let str = "<select>";
+//         for (const currency in rates) {
+//             str += `<option>${currency}</option>`;
+//         }
+//         str += "</select>";
+//         document.write(str);
+//     })
+
+
+
+//Currency table
+
+// fetch('https://open.er-api.com/v6/latest/USD').then(res => res.json())
+//     .then(data => {
+//         const rates = data.rates;
+//         const currencies = Object.keys(rates);
+//         let str = "<table>";
+//         str += `<thead><tr><th></th>`;
+//         for (const currency of currencies) {
+//             str += `<th>${currency}</th>`;
+//         }
+//         str += `</tr></thead><tbody>`;
+//         for (const currency1 of currencies) {
+//             str += `<tr><th>${currency1}</th>`;
+//             for (const currency2 of currencies) {
+//                 if (currency1 === currency2) {
+//                     str += `<td>1.00</td>`;
+//                 } else {
+//                     const crossRate = rates[currency2] / rates[currency1];
+//                     const result = crossRate.toFixed(2);
+//                     str += `<td>${result}</td>`;
+//                 }
+//             }
+//             str += `<tr>`;
+//         }
+//         str += "</tbody></table>";
+//         document.write(str);
+//     })
+
+
+
+//Form
+
+// const car = {
+//     "Name": "chevrolet chevelle malibu",
+//     "Cylinders": 8,
+//     "Displacement": 307,
+//     "Horsepower": 130,
+//     "Weight_in_lbs": 3504,
+//     "Origin": "USA",
+//     "in_production": false
+// }
+
+// let str = `<form><fieldset><legend>${car.Name}</legend>`;
+
+// for (const key in car) {
+//     const type = typeof car[key];
+//     if (type === "boolean") {
+//         const check = car[key] ? "checked" : "";
+//         str += `<p><label> ${key}: <input type = "checkbox" ${check}/></label></p>`;
+//     } else if (type === "number") {
+//         str += `<p><label> ${key}: <input type = "${type}" value = "${car[key]}"/></label></p>`;
+//     }
+//     else {
+//         str += `<p><label> ${key}: <input type = "text" value = "${car[key]}"/></label></p>`;
+//     }
+// }
+// str += "</fieldset></form>";
+// document.write(str);
+
