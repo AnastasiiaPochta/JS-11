@@ -8,8 +8,6 @@
 //     apetit: 'черезчур хороший'
 // }
 
-
-
 //Literals expand
 
 // const persik = {
@@ -20,8 +18,6 @@
 //     apetit: 'черезчур хороший'
 // }
 // console.log(persik);
-
-
 
 //Literals copy
 
@@ -38,8 +34,6 @@
 //     ...persik
 // }
 // console.log(obj);
-
-
 
 //Html tree
 
@@ -99,8 +93,6 @@
 // const idInput = body.children[0].children[3].attrs.id;
 // console.log(idInput);
 
-
-
 //Parent
 
 // for (const child of body.children) {
@@ -118,14 +110,10 @@
 // }
 // console.log(body);
 
-
-
 //Change OK
 
 // body.children[1].children[0].attrs[prompt('Введіть нову назву атрибута')] = prompt('Введіть нове значення для атрибута');
 // console.log(body.children[1].children[0]);
-
-
 
 //Destructure
 
@@ -175,8 +163,6 @@
 // } = body;
 // console.log(idAttr);
 
-
-
 //Destruct array
 
 // const arr = [1,2,3,4,5, "a", "b", "c"];
@@ -186,8 +172,6 @@
 // console.log(even2);
 // console.log(letters);
 
-
-
 //Destruct string
 
 // const arr = [1, "abc"];
@@ -195,8 +179,6 @@
 
 // console.log(s3);
 // console.log(number);
-
-
 
 //Destruct 2
 
@@ -212,8 +194,6 @@
 
 // console.log(`${name1}, ${name2}`);
 
-
-
 //Destruct 3
 
 // const arr = [1, 2, 3, 4, 5, 6, 7, 10];
@@ -221,8 +201,6 @@
 
 // console.log(a, b);
 // console.log(length);
-
-
 
 //Copy delete
 
@@ -236,8 +214,6 @@
 
 // const { [prompt('Введіть ключ, який необхідно видалити')]: deletedKey, ...copyPersik } = persik;
 // console.log(copyPersik);
-
-
 
 //Currency real rate
 
@@ -255,8 +231,6 @@
 //         }
 //     })
 
-
-
 //Currency drop down
 
 // fetch('https://open.er-api.com/v6/latest/USD').then(res => res.json())
@@ -269,8 +243,6 @@
 //         str += "</select>";
 //         document.write(str);
 //     })
-
-
 
 //Currency table
 
@@ -301,8 +273,6 @@
 //         document.write(str);
 //     })
 
-
-
 //Form
 
 // const car = {
@@ -316,7 +286,6 @@
 // }
 
 // let str = `<form><fieldset><legend>${car.Name}</legend>`;
-
 // for (const key in car) {
 //     const type = typeof car[key];
 //     if (type === "boolean") {
@@ -332,3 +301,63 @@
 // str += "</fieldset></form>";
 // document.write(str);
 
+//Table
+
+const car = [
+  {
+    Name: "chevrolet chevelle malibu",
+    Cylinders: 8,
+    Displacement: 307,
+    Horsepower: 130,
+    Weight_in_lbs: 3504,
+    Origin: "USA",
+  },
+  {
+    Name: "buick skylark 320",
+    Miles_per_Gallon: 15,
+    Cylinders: 8,
+    Displacement: 350,
+    Horsepower: 165,
+    Weight_in_lbs: 3693,
+    Acceleration: 11.5,
+    Year: "1970-01-01",
+  },
+  {
+    Miles_per_Gallon: 18,
+    Cylinders: 8,
+    Displacement: 318,
+    Horsepower: 150,
+    Weight_in_lbs: 3436,
+    Year: "1970-01-01",
+    Origin: "USA",
+  },
+  {
+    Name: "amc rebel sst",
+    Miles_per_Gallon: 16,
+    Cylinders: 8,
+    Displacement: 304,
+    Horsepower: 150,
+    Year: "1970-01-01",
+    Origin: "USA",
+  },
+];
+
+const columns = [];
+for (i = 0; i < car.length; i++) {
+  columns.push(...Object.keys(car[i]));
+}
+const uniqueColumns = [...new Set(columns)];
+let str = `<table><thead><tr>`;
+for (const column of uniqueColumns) {
+  str += `<th>${column}</th>`;
+}
+str += `</tr></thead><tbody>`;
+for (const row of car) {
+  str += "<tr>";
+  for (const column of uniqueColumns) {
+    str += `<td>${row[column] ? row[column] : ""}</td>`;
+  }
+  str += "</tr>";
+}
+str += "</tbody></table>";
+document.write(str);
