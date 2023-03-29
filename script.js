@@ -1,279 +1,363 @@
-// Confirms
+//Literals
 
-// const arr = [confirm(`Ви згодні на обробку даних?`), confirm(`Вам виповнилося 18 років?`), confirm(`Так чи ні?`)];
-
-
-
-// Prompts
-
-// const arr = [];
-// arr[0] = prompt(`Введіть Ваше Ім'я`);
-// arr[1] = prompt(`Введіть Ім'я Вашого кота`);
-
-
-
-// Item access
-
-// const arr = ['Піони', 'Тюльпани', 'Троянди', 'Фіалки', 'Маки', 'Польові квіти'];
-// const index = prompt('Введіть індекс елемента в масиві, який Вам подати?');
-// if (index <= arr.length - 1 && index >= 0) {
-//     alert(arr[index])
-// } else {
-//     alert(`В массиві немає елемента з таким індексом`)
+// const persik = {
+//     color: 'рижий',
+//     weight: '5 kg',
+//     height: '40 см',
+//     eyeColor: 'brown',
+//     apetit: 'черезчур хороший'
 // }
 
-// індекс "length" виводить довжину масива, якщо забрати умову яку я додала
+//Literals expand
 
-
-
-// Item change
-
-// const arr = [];
-// const i = prompt(`Введіть номер індексу в масиві, куди бажаєте зробити запис`);
-// arr[i] = prompt(`Введіть значення для цього індексу.`);
-// console.log(arr);
-
-
-
-// Multiply table
-
-// const arr = [
-//     [0, 0, 0, 0, 0],
-//     [0, 1, 2, 3, 4],
-//     [0, 2, 4, 6, 8],
-//     [0, 3, 6, 9, 12],
-//     [0, 4, 8, 12, 16]
-// ];
-
-
-
-// Multiply table slice
-
-// const arr = [
-//     [0, 0, 0, 0, 0],
-//     [0, 1, 2, 3, 4],
-//     [0, 2, 4, 6, 8],
-//     [0, 3, 6, 9, 12],
-//     [0, 4, 8, 12, 16]
-// ];
-// const newArr = arr.slice(1);
-// for (let i = 0; i < newArr.length; i++) {
-//     newArr[i] = newArr[i].slice(1)
+// const persik = {
+//     [prompt('Введіть потрібний ключ для кольору кота')]: prompt('Введіть колір кота'),
+//     [prompt('Введіть потрібний ключ для ваги кота')]: prompt('Введіть вагу кота'),
+//     height: '40 см',
+//     eyeColor: 'brown',
+//     apetit: 'черезчур хороший'
 // }
-// console.log(newArr);
+// console.log(persik);
 
+//Literals copy
 
-
-// IndexOf Word
-
-// const str = prompt(`Введіть рядок із декількох слів`);
-// const arr = str.split(` `);
-// const word = prompt(`Яке слово Вам потірбне з цього рядка?`);
-// const index = arr.indexOf(word) + 1;
-// (arr.indexOf(word) >= 0) ?
-//     alert(`Слово '${word}' є ${index} за рахунком у Вашому рядку`) :
-//     alert('Такого слова не було в рядку(');
-
-
-
-// Reverse
-
-// const arr = [];
-// for (let i = 1; i <= 5; i++) {
-//     arr.push(prompt(`Введіть елемент масиву`));
+// const persik = {
+//     [prompt('Введіть потрібний ключ для кольору кота')]: prompt('Введіть колір кота'),
+//     [prompt('Введіть потрібний ключ для ваги кота')]: prompt('Введіть вагу кота'),
+//     height: '40 см',
+//     eyeColor: 'brown',
+//     apetit: 'черезчур хороший'
 // }
-// const newArr = [];
-// for (let i = 1; i <= 5; i++) {
-//     newArr.push(arr.pop());
+// const name = prompt("Введіть ім'я кота")
+// const obj = {
+//     name,
+//     ...persik
 // }
-// console.log(newArr);
+// console.log(obj);
 
+//Html tree
 
-
-// Reverse 2
-
-// const arr = [];
-// for (let i = 1; i <= 5; i++) {
-//     arr.push(prompt(`Введіть елемент масиву`));
-// }
-// const newArr = [];
-// for (let i = 1; i <= 5; i++) {
-//     newArr.push(arr.pop());
-// }
-// const newArr2 = [];
-// for (let i = 1; i <= 5; i++) {
-//     newArr2.unshift(newArr.shift());
-// }
-// console.log(newArr2);
-
-
-
-// Copy
-
-// const arr = [
-//     [0, 0, 0, 0, 0],
-//     [0, 1, 2, 3, 4],
-//     [0, 2, 4, 6, 8],
-//     [0, 3, 6, 9, 12],
-//     [0, 4, 8, 12, 16]
-// ];
-// const copyArr = arr.slice();
-
-
-
-// Deep Copy
-
-// const arr = [
-//     [0, 0, 0, 0, 0],
-//     [0, 1, 2, 3, 4],
-//     [0, 2, 4, 6, 8],
-//     [0, 3, 6, 9, 12],
-//     [0, 4, 8, 12, 16]
-// ];
-// const arrCopy = JSON.parse(JSON.stringify(arr));
-
-
-
-// Array Equals
-
-// const arr1 = [1,2,3];
-// const arr2 = arr1;
-// arr2 === arr1; //true, оскільки це посилання на один і той же масив
-
-
-
-//Flat
-
-// const arr = [
-//     [0, 0, 0, 0, 0],
-//     [0, 1, 2, 3, 4],
-//     [0, 2, 4, 6, 8],
-//     [0, 3, 6, 9, 12],
-//     [0, 4, 8, 12, 16]
-// ];
-// const flatArr = [...arr[0], ...arr[1], ...arr[2], ...arr[3], ...arr[4]];
-// console.log(flatArr);
-
-
-
-//Destruct
-
-// const str = prompt(`Введіть якийсь рядок`);
-// const [a,,,,b,,,,c] = str;
-// alert (`Я витягнув '${a}', '${b}' та '${c}'`);
-
-
-
-//Destruct default
-
-// const str = prompt(`Введіть якийсь рядок`);
-// const [,a=`!`,,b=`!`,c=`!`] = str;
-// alert (`Я витягнув '${a}', '${b}' та '${c}'`);
-
-
-
-//Multiply table rest  
-
-// const arr = [
-//     [0, 0, 0, 0, 0],
-//     [0, 1, 2, 3, 4],
-//     [0, 2, 4, 6, 8],
-//     [0, 3, 6, 9, 12],
-//     [0, 4, 8, 12, 16]
-// ];
-// const [,[, ...rest1], [, ...rest2], [, ...rest3], [, ...rest4]] = arr;
-// const newArr = [rest1, rest2, rest3, rest4];
-// console.log(newArr);
-
-
-
-//For Alert
-
-// const names = ["John", "Paul", "George", "Ringo"];
-// for (const name of names) {
-//     alert(`${name}`)
+// const body = {
+//     tagName: 'body',
+//     children: [
+//         {
+//             tagName: 'div',
+//             children: [
+//                 {
+//                     tagName: 'span',
+//                     children: ['Enter a data please:']
+//                 },
+//                 {
+//                     tagName: 'br',
+//                 },
+//                 {
+//                     tagName: 'input',
+//                     attrs: {
+//                         type: 'text',
+//                         id: 'name'
+//                     },
+//                 },
+//                 {
+//                     tagName: 'input',
+//                     attrs: {
+//                         type: 'text',
+//                         id: 'surname'
+//                     },
+//                 }
+//             ]
+//         },
+//         {
+//             tagName: 'div',
+//             children: [
+//                 {
+//                     tagName: 'button',
+//                     attrs: {
+//                         id: 'ok'
+//                     },
+//                     children: ['OK']
+//                 },
+//                 {
+//                     tagName: 'button',
+//                     attrs: {
+//                         id: 'cancel'
+//                     },
+//                     children: ['Cancel']
+//                 }
+//             ]
+//         }
+//     ],
 // }
 
+// const cancelButton = body.children[1].children[1].children[0];
+// console.log(cancelButton);
+// const idInput = body.children[0].children[3].attrs.id;
+// console.log(idInput);
 
+//Parent
 
-//For Select Option
-
-// const currencies = ["USD", "EUR", "GBP", "UAH"];
-// let  str = "<select>";
-// for (const currency of currencies){
-//     str += `<option>${currency}</option>`;
-// }
-// str+= "</select>";
-// document.write(str);
-
-
-
-//For Table Horizontal
-
-// const names = ["John", "Paul", "George", "Ringo"]
-// let str = "<table><tr>";
-// for (const name of names){
-//     str+= `<td>${name}</td>`
-// }
-// str+= "</tr></table>";
-// document.write(str);
-
-
-
-//For Table Vertical
-
-// const names = ["John", "Paul", "George", "Ringo"]
-// let str = "<table>";
-// for (const name of names){
-//     str+= `<tr><td>${name}</td></tr>`;
-// }
-// str+= "</table>";
-// document.write(str);
-
-
-
-//For Table Letters
-
-// const currencies = ["USD", "EUR", "GBP", "UAH"];
-// let str = "<table>";
-// for (const currency of currencies){
-//     str+= `<tr>`;
-//     for (const letter of currency){
-//         str+= `<td>${letter}</td>`;
+// for (const child of body.children) {
+//   child.parent = body;
+//   if (child.children) {
+//     for (const grandchild of child.children) {
+//       grandchild.parent = child;
+//       if (grandchild.children) {
+//         for (const newchild of grandchild.children) {
+//           newchild.parent = grandchild;
+//         }
+//       }
 //     }
-//     str+= `</tr>`;
+//   }
 // }
-// str+= "</table>";
-// document.write(str);
+// console.log(body);
 
+//Change OK
 
+// body.children[1].children[0].attrs[prompt('Введіть нову назву атрибута')] = prompt('Введіть нове значення для атрибута');
+// console.log(body.children[1].children[0]);
 
-//For Multiply Table
+//Destructure
 
-// const arr = [
-//     [0, 0, 0, 0, 0],
-//     [0, 1, 2, 3, 4],
-//     [0, 2, 4, 6, 8],
-//     [0, 3, 6, 9, 12],
-//     [0, 4, 8, 12, 16]
-// ];
-// let str = "<table>";
-// for (const number of arr){
-//     str+= `<tr>`;
-//     for (const num of number){
-//         str+= `<td>${num}</td>`;
+// const {
+//     children: [
+//         {
+//             children: [
+//                 {
+//                     children: [spanText]
+//                 }
+//             ]
+//         }
+//     ]
+// } = body;
+// console.log(spanText);
+
+// const {
+//     children: [
+//         ,
+//         {
+//             children: [
+//                 ,
+//                 {
+//                     children: [buttonText],
+//                 }
+//             ]
+//         }
+//     ]
+// } = body;
+// console.log(buttonText);
+
+// const {
+//     children: [
+//         {
+//             children: [
+//                 ,
+//                 ,
+//                 ,
+//                 {
+//                     attrs: {
+//                         id: idAttr,
+//                     }
+//                 }
+//             ]
+//         }
+//     ]
+// } = body;
+// console.log(idAttr);
+
+//Destruct array
+
+// const arr = [1,2,3,4,5, "a", "b", "c"];
+// const [odd1, even1, odd2, even2, odd3,...letters] = arr;
+
+// console.log(odd2);
+// console.log(even2);
+// console.log(letters);
+
+//Destruct string
+
+// const arr = [1, "abc"];
+// const [number, [s1, s2, s3]] = arr;
+
+// console.log(s3);
+// console.log(number);
+
+//Destruct 2
+
+// const obj = {
+//     name: 'Ivan',
+//     surname: 'Petrov',
+//     children: [{ name: 'Maria' }, { name: 'Nikolay' }]
+// };
+
+// const {
+//     children: [{name: name1 }, { name: name2}]
+// } = obj;
+
+// console.log(`${name1}, ${name2}`);
+
+//Destruct 3
+
+// const arr = [1, 2, 3, 4, 5, 6, 7, 10];
+// const {0: a, 1: b, length} = arr;
+
+// console.log(a, b);
+// console.log(length);
+
+//Copy delete
+
+// const persik = {
+//     color: 'рижий',
+//     weight: '5 kg',
+//     height: '40 см',
+//     eyeColor: 'brown',
+//     apetit: 'черезчур хороший'
+// }
+
+// const { [prompt('Введіть ключ, який необхідно видалити')]: deletedKey, ...copyPersik } = persik;
+// console.log(copyPersik);
+
+//Currency real rate
+
+// fetch('https://open.er-api.com/v6/latest/USD').then(res => res.json())
+//     .then(data => {
+//         const rates = data.rates;
+//         const curr = prompt('Введіть назву вхідної валюти у форматі USD, EUR, UAH і т.д.').toUpperCase();
+//         const currExchange = prompt('Введіть валюту в яку відбувається конвертація у форматі USD, EUR, UAH і т.д.').toUpperCase();
+//         const sum = + prompt('Введіть суму у вхідній валюті');
+//         if (rates[curr] && rates[currExchange]) {
+//             const result = (sum * (rates[currExchange] / rates[curr])).toFixed(2);
+//             alert(`Ви отримаєте ${result} ${currExchange}`);
+//         } else {
+//             alert('Ви ввели якусь дичину замість назви валюти, спробуйте ще раз');
+//         }
+//     })
+
+//Currency drop down
+
+// fetch('https://open.er-api.com/v6/latest/USD').then(res => res.json())
+//     .then(data => {
+//         const rates = data.rates;
+//         let str = "<select>";
+//         for (const currency in rates) {
+//             str += `<option>${currency}</option>`;
+//         }
+//         str += "</select>";
+//         document.write(str);
+//     })
+
+//Currency table
+
+// fetch('https://open.er-api.com/v6/latest/USD').then(res => res.json())
+//     .then(data => {
+//         const rates = data.rates;
+//         const currencies = Object.keys(rates);
+//         let str = "<table>";
+//         str += `<thead><tr><th></th>`;
+//         for (const currency of currencies) {
+//             str += `<th>${currency}</th>`;
+//         }
+//         str += `</tr></thead><tbody>`;
+//         for (const currency1 of currencies) {
+//             str += `<tr><th>${currency1}</th>`;
+//             for (const currency2 of currencies) {
+//                 if (currency1 === currency2) {
+//                     str += `<td>1.00</td>`;
+//                 } else {
+//                     const crossRate = rates[currency2] / rates[currency1];
+//                     const result = crossRate.toFixed(2);
+//                     str += `<td>${result}</td>`;
+//                 }
+//             }
+//             str += `<tr>`;
+//         }
+//         str += "</tbody></table>";
+//         document.write(str);
+//     })
+
+//Form
+
+// const car = {
+//     "Name": "chevrolet chevelle malibu",
+//     "Cylinders": 8,
+//     "Displacement": 307,
+//     "Horsepower": 130,
+//     "Weight_in_lbs": 3504,
+//     "Origin": "USA",
+//     "in_production": false
+// }
+
+// let str = `<form><fieldset><legend>${car.Name}</legend>`;
+// for (const key in car) {
+//     const type = typeof car[key];
+//     if (type === "boolean") {
+//         const check = car[key] ? "checked" : "";
+//         str += `<p><label> ${key}: <input type = "checkbox" ${check}/></label></p>`;
+//     } else if (type === "number") {
+//         str += `<p><label> ${key}: <input type = "${type}" value = "${car[key]}"/></label></p>`;
 //     }
-//     str += `</tr>`;
+//     else {
+//         str += `<p><label> ${key}: <input type = "text" value = "${car[key]}"/></label></p>`;
+//     }
 // }
-// str+= "</table>";
+// str += "</fieldset></form>";
 // document.write(str);
 
+//Table
 
+// const car = [
+//   {
+//     Name: "chevrolet chevelle malibu",
+//     Cylinders: 8,
+//     Displacement: 307,
+//     Horsepower: 130,
+//     Weight_in_lbs: 3504,
+//     Origin: "USA",
+//   },
+//   {
+//     Name: "buick skylark 320",
+//     Miles_per_Gallon: 15,
+//     Cylinders: 8,
+//     Displacement: 350,
+//     Horsepower: 165,
+//     Weight_in_lbs: 3693,
+//     Acceleration: 11.5,
+//     Year: "1970-01-01",
+//   },
+//   {
+//     Miles_per_Gallon: 18,
+//     Cylinders: 8,
+//     Displacement: 318,
+//     Horsepower: 150,
+//     Weight_in_lbs: 3436,
+//     Year: "1970-01-01",
+//     Origin: "USA",
+//   },
+//   {
+//     Name: "amc rebel sst",
+//     Miles_per_Gallon: 16,
+//     Cylinders: 8,
+//     Displacement: 304,
+//     Horsepower: 150,
+//     Year: "1970-01-01",
+//     Origin: "USA",
+//   },
+// ];
 
-//Function Capitalize
-
-// const capitalize = str => {
-//     let result = str.slice(0, 1).toUpperCase()+str.slice(1).toLowerCase();
-//     return result;
+// const columns = [];
+// for (i = 0; i < car.length; i++) {
+//   columns.push(...Object.keys(car[i]));
 // }
-// console.log(capitalize("cANBerRa"));
+// const uniqueColumns = [...new Set(columns)];
+// let str = `<table><thead><tr>`;
+// for (const column of uniqueColumns) {
+//   str += `<th>${column}</th>`;
+// }
+// str += `</tr></thead><tbody>`;
+// for (const row of car) {
+//   str += "<tr>";
+//   for (const column of uniqueColumns) {
+//     str += `<td>${row[column] ? row[column] : ""}</td>`;
+//   }
+//   str += "</tr>";
+// }
+// str += "</tbody></table>";
+// document.write(str);
