@@ -11,6 +11,16 @@ input[type=number],
 select {
   width: 180px;
   border: 1px solid #ccc;
+  margin: 0px 10px 10px 0px;
+}
+
+label {
+  padding: 0px 12px 4px 0px;
+  float: left;
+}
+
+#divisionResult {
+  margin-bottom: 50px;
 }
 
 table {
