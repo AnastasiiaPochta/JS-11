@@ -1,106 +1,145 @@
-//blocks
+//while confirm
 
-let a = 10;
-{
-  let b = 20;
-  {
-    let c = 30;
-    // a = 10, b = 20, c = 30, d - undefined
-    b++;
-    a *= 10;
-  }
-  {
-    let c = 50;
-    // a = 100, b = 21, c = 50, d - undefined
-    b += 500;
-  }
-  {
-    const a = 100500;
-    const d = "value";
-    // a = 100500, b = 521, c - undefined, d - "value"
-    {
-      let a = -50;
-      b = 1000;
-      // a = -50, b = 1000, c - undefined, d - "value"
-    }
-    // a = 100500, b = 1000, c - undefined, d - "value"
-  }
-  //a = 100, b = 1000, c - undefined, d - undefined
-}
-//a = 100, b - undefined, c - undefined, d - undefined
+// let i = 0
+// while (!confirm('Приймаєш мої умови?')) {
+//      alert('Я так просто не здамся')
+//      i++
+// }
+// alert(`Ти прийняв мої умови на ${i} раз.`)
 
-//comparison if
+//array fill
 
-const age = +prompt("Скільки вам років?");
-if (age < 0) {
-  alert("ти ще не народився");
-} else if (age < 18) {
-  alert("школяр");
-} else if (age < 30) {
-  alert("молодь");
-} else if (age < 45) {
-  alert("зрілість");
-} else if (age < 60) {
-  alert("захід сонця");
-} else {
-  alert("як пенсія?");
-}
+// const arr = [];
+// while (element = prompt('Введи елемент для масиву')) {
+//     arr.push(element);
+//     alert('Дякую, цей елемент додано');
+//     if (element === null){
+//         break
+//     };
+// };
+// console.log(arr);
 
-//switch: sizes
+//array fill nopush
 
-const userSize = prompt(
-  "Введіть Ваш розмір в міжнародному форматі: S, M, L, XL і тд"
-);
+// const arr = [];
+// let i = 0;
+// while (element = prompt('Введи елемент для масиву')) {
+//     arr[i] = element;
+//     alert('Дякую, цей елемент додано');
+//     if (element === null){
+//         break
+//     };
+//     i++;
+// };
+// console.log(arr);
 
-switch (userSize) {
-  case "XXS":
-    alert("В США у Вас 8 розмір");
-    break;
-  case "XS":
-    alert("В США у Вас 10 розмір");
-    break;
-  case "S":
-    alert("В США у Вас 12 розмір");
-    break;
-  case "M":
-    alert("В США у Вас 14 розмір");
-    break;
-  case "L":
-    alert("В США у Вас 16 розмір");
-    break;
-  case "XL":
-    alert("В США у Вас 18 розмір");
-    break;
-  case "XXL":
-    alert("В США у Вас 20 розмір");
-    break;
-  case "XXXL":
-    alert("В США у Вас 22 розмір");
-    break;
-  default:
-    alert("Введіть корректно розімр: формат XXS, XS, S...");
-}
+//infinite probability
 
-//switch: if
+// let i = 0;
+// for ( ; ; ) {
+//   console.log(i);
+//   if (Math.random() > 0.9) {
+//     break;
+//   }
+//   i++;
+// }
+// alert(`Цикл програвся ${i} раз.`);
 
-const color = prompt("Введіть колір");
+//empty loop
 
-if (color === "red") {
-  document.write("<div style='background-color: red;'>червоний</div>");
-  document.write(
-    "<div style='background-color: black; color: white;'>чорний</div>"
-  );
-} else if (color === "black") {
-  document.write(
-    "<div style='background-color: black; color: white;'>чорний</div>"
-  );
-} else if (color === "blue") {
-  document.write("<div style='background-color: blue;'>синій</div>");
-  document.write("<div style='background-color: green;'>зелений</div>");
-} else if (color === "green") {
-  document.write("<div style='background-color: green;'>зелений</div>");
-} else {
-  document.write("<div style='background-color: gray;'>Я не зрозумів</div>");
-}
+// while (prompt("ОК чи скасувати?") === null) {}
 
-//noswitch
+//progression sum
+
+// const n = +prompt('Введіть число до якого Вам підрахувати суму арифметичної прогресії з кроком 3');
+// let progression = 0;
+// for (i=1; i <= n; i+=3) {
+//     progression += i;
+// }
+// console.log(progression);
+
+//chess one line
+
+// const length = 8;
+// let str = "";
+// for (let i = 0; i < length; i++) {
+//   str += "# ";
+// }
+// console.log(str);
+
+//numbers
+
+// let str = "";
+// for (i = 0; i < 10; i++) {
+//   for (j = 0; j < 10; j++) {
+//     str += j;
+//   }
+//   str += "\n";
+// }
+// console.log(str);
+
+//chess
+
+// const height = prompt('Введіть висоту шахматної дошки');
+// const width = prompt('Введіть ширину шахматної дошки');;
+// let str = "";
+// for (i = 0; i < height; i++) {
+//   for (j = 0; j < width; j++) {
+//     if (i%2) {
+//         str += '#.';
+//     } else {
+//         str += '.#';
+//     }
+//   }
+//   str += "\n";
+// }
+// console.log(str);
+
+//cubes
+
+// const n = +prompt('Введіть число n');
+// const arr = [];
+// for (i=0; i < n; i++) {
+//     arr[i] = Math.pow(i,3);
+// }
+// console.log(arr);
+
+//multiply table
+
+// let arr = [];
+// for (i = 0; i < 10; i++) {
+//   arr[i] = [];
+//   for (j = 0; j < 10; j++) {
+//     arr[i][j] = i * j;
+//   }
+// }
+// console.log(arr);
+
+//read array of objects
+
+// const readArrayOfObjects = () => {
+//   const arr = [];
+//   let counting = true;
+//   while (counting) {
+//     const obj = {};
+//     let objCreating = true;
+//     while (objCreating) {
+//       const key = prompt("Enter a key:");
+//       if (key === null) {
+//         objCreating = false;
+//         continue;
+//       }
+//       const value = prompt(`Enter a value for ${key}:`);
+//       if (value === null) {
+//         objCreating = false;
+//         continue;
+//       }
+//       obj[key] = value;
+//     }
+//     arr.push(obj);
+//     counting = confirm("Бажаєте створити ще один об'єкт?");
+//   }
+//   return arr;
+// };
+// const arr = readArrayOfObjects();
+// console.log(arr);
