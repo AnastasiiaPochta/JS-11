@@ -143,3 +143,70 @@
 // };
 // const arr = readArrayOfObjects();
 // console.log(arr);
+
+//Ромбік
+
+// let size = prompt("Введіть розмір ромбіка");
+// let str = "";
+// for (let i = 1; i <= size; i++) {
+//   for (let j = 1; j <= size; j++) {
+//     if (i <= size / 2) {
+//       if (j < size / 2 - i + 1) {
+//         str += ".";
+//       } else if (j > size / 2 + i) {
+//         str += ".";
+//       } else {
+//         str += "#";
+//       }
+//     } else {
+//       if (j < i - size / 2) {
+//         str += ".";
+//       } else if (j > size - (i - size / 2) + 1) {
+//         str += ".";
+//       } else {
+//         str += "#";
+//       }
+//     }
+//   }
+//   str += "\n";
+// }
+// console.log(str);
+
+//DOM: multiply table
+
+const tbl = document.createElement("table");
+for (let i = 0; i <= 9; i++) {
+  const tr = document.createElement("tr");
+  for (let j = 0; j <= 9; j++) {
+    const td = document.createElement("td");
+    if (i > 0 && j > 0) {
+      number = i * j;
+    } else if (i === 0) {
+      number = j;
+    } else {
+      number = i;
+    }
+    td.innerText = number;
+    td.addEventListener("mouseover", () => {
+      td.style.backgroundColor = "yellow";
+      tr.style.backgroundColor = "blue";
+      for (let k = 0; k <= 9; k++) {
+        tbl.rows[k].cells[j].style.backgroundColor = "blue";
+      }
+    });
+    td.addEventListener("mouseout", () => {
+      td.style.backgroundColor = "";
+      tr.style.backgroundColor = "";
+      for (let k = 0; k <= 9; k++) {
+        tbl.rows[k].cells[j].style.backgroundColor = "";
+      }
+    });
+    tr.appendChild(td);
+  }
+  tbl.appendChild(tr);
+}
+document.body.append(tbl);
+
+//DOM: highlight cell ++
+
+//DOM: Highlight cross +-
