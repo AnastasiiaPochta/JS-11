@@ -174,6 +174,43 @@
 
 //DOM: multiply table
 
+// const tbl = document.createElement("table");
+// for (let i = 0; i <= 9; i++) {
+//   const tr = document.createElement("tr");
+//   for (let j = 0; j <= 9; j++) {
+//     const td = document.createElement("td");
+//     if (i > 0 && j > 0) {
+//       number = i * j;
+//     } else if (i === 0) {
+//       number = j;
+//     } else {
+//       number = i;
+//     }
+//     td.innerText = number;
+//     td.addEventListener("mouseover", () => {
+//       for (let k = 0; k <= 9; k++) {
+//         tbl.rows[k].cells[j].style.backgroundColor = "blue";
+//       }
+//       td.style.backgroundColor = "yellow";
+//       tr.style.backgroundColor = "blue";
+//     });
+//     td.addEventListener("mouseout", () => {
+//       for (let k = 0; k <= 9; k++) {
+//         tbl.rows[k].cells[j].style.backgroundColor = "";
+//       }
+//       td.style.backgroundColor = "";
+//       tr.style.backgroundColor = "";
+//     });
+//     tr.appendChild(td);
+//   }
+//   tbl.appendChild(tr);
+// }
+// document.body.append(tbl);
+
+//DOM: highlight cell ++
+
+//DOM: Highlight cross ++
+
 const tbl = document.createElement("table");
 for (let i = 0; i <= 9; i++) {
   const tr = document.createElement("tr");
@@ -187,26 +224,28 @@ for (let i = 0; i <= 9; i++) {
       number = i;
     }
     td.innerText = number;
-    td.addEventListener("mouseover", () => {
-      td.style.backgroundColor = "yellow";
-      tr.style.backgroundColor = "blue";
-      for (let k = 0; k <= 9; k++) {
-        tbl.rows[k].cells[j].style.backgroundColor = "blue";
-      }
-    });
-    td.addEventListener("mouseout", () => {
-      td.style.backgroundColor = "";
-      tr.style.backgroundColor = "";
-      for (let k = 0; k <= 9; k++) {
-        tbl.rows[k].cells[j].style.backgroundColor = "";
-      }
-    });
     tr.appendChild(td);
   }
   tbl.appendChild(tr);
 }
 document.body.append(tbl);
 
-//DOM: highlight cell ++
-
-//DOM: Highlight cross +-
+const cells = document.querySelectorAll("td");
+for (const cell of cells) {
+  cell.onmouseover = (event) => {
+    for (let i = 0; i < tbl.rows.length; i++) {
+      const row = tbl.rows[i];
+      row.cells[cell.cellIndex].style.backgroundColor = "violet";
+    }
+    event.target.style.backgroundColor = "yellow";
+    event.target.parentNode.style.backgroundColor = "blue";
+  };
+  cell.onmouseout = (event) => {
+    for (let i = 0; i < tbl.rows.length; i++) {
+      const row = tbl.rows[i];
+      row.cells[cell.cellIndex].style.backgroundColor = "";
+    }
+    event.target.style.backgroundColor = "";
+    event.target.parentNode.style.backgroundColor = "";
+  };
+}
