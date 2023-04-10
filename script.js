@@ -29,8 +29,6 @@ let a = 10;
 }
 //a = 100, b - undefined, c - undefined, d - undefined
 
-
-
 //comparison if
 
 const age = +prompt("Скільки вам років?");
@@ -47,8 +45,6 @@ if (age < 0) {
 } else {
   alert("як пенсія?");
 }
-
-
 
 //switch: sizes
 
@@ -85,8 +81,6 @@ switch (userSize) {
     alert("Введіть корректно розімр: формат XXS, XS, S...");
 }
 
-
-
 //switch: if
 
 const color = prompt("Введіть колір");
@@ -108,8 +102,6 @@ if (color === "red") {
 } else {
   document.write("<div style='background-color: gray;'>Я не зрозумів</div>");
 }
-
-
 
 //noswitch
 
@@ -136,8 +128,6 @@ noSwitch(drink, {
   },
 });
 
-
-
 //closure calc
 
 const buttonsDiv = document.getElementById("buttons");
@@ -159,8 +149,6 @@ fetch("https://open.er-api.com/v6/latest/USD")
       buttonsDiv.appendChild(btn);
     }
   });
-
-
 
 //closure calc 2
 
@@ -198,8 +186,6 @@ fetch("https://open.er-api.com/v6/latest/USD")
     amount.oninput = convertCurrency;
   });
 
-
-  
 //countries and cities
 
 fetch(
@@ -207,20 +193,9 @@ fetch(
 )
   .then((res) => res.json())
   .then((data) => {
-    console.log(data);
     const countries = Object.keys(data);
     const countriesSelect = document.createElement("select");
     const citiesSelect = document.createElement("select");
-    const city = document.createElement("option");
-    city.innerText = " ";
-    citiesSelect.appendChild(city);
-    for (const country of countries) {
-      const optn = document.createElement("option");
-      optn.innerText = country;
-      countriesSelect.appendChild(optn);
-    }
-    document.body.appendChild(countriesSelect);
-    document.body.appendChild(citiesSelect);
     const cityFunc = () => {
       citiesSelect.innerHTML = "";
       const selected = countriesSelect.value;
@@ -232,4 +207,12 @@ fetch(
       }
     };
     countriesSelect.onchange = cityFunc;
+    for (const country of countries) {
+      const optn = document.createElement("option");
+      optn.innerText = country;
+      countriesSelect.appendChild(optn);
+    }
+    cityFunc();
+    document.body.appendChild(countriesSelect);
+    document.body.appendChild(citiesSelect);
   });
