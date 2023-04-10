@@ -224,28 +224,24 @@ for (let i = 0; i <= 9; i++) {
       number = i;
     }
     td.innerText = number;
+    td.onmouseover = (event) => {
+      for (let i = 0; i < tbl.rows.length; i++) {
+        const row = tbl.rows[i];
+        row.cells[td.cellIndex].style.backgroundColor = "violet";
+      }
+      event.target.style.backgroundColor = "yellow";
+      event.target.parentNode.style.backgroundColor = "blue";
+    };
+    td.onmouseout = (event) => {
+      for (let i = 0; i < tbl.rows.length; i++) {
+        const row = tbl.rows[i];
+        row.cells[td.cellIndex].style.backgroundColor = "";
+      }
+      event.target.style.backgroundColor = "";
+      event.target.parentNode.style.backgroundColor = "";
+    };
     tr.appendChild(td);
   }
   tbl.appendChild(tr);
 }
 document.body.append(tbl);
-
-const cells = document.querySelectorAll("td");
-for (const cell of cells) {
-  cell.onmouseover = (event) => {
-    for (let i = 0; i < tbl.rows.length; i++) {
-      const row = tbl.rows[i];
-      row.cells[cell.cellIndex].style.backgroundColor = "violet";
-    }
-    event.target.style.backgroundColor = "yellow";
-    event.target.parentNode.style.backgroundColor = "blue";
-  };
-  cell.onmouseout = (event) => {
-    for (let i = 0; i < tbl.rows.length; i++) {
-      const row = tbl.rows[i];
-      row.cells[cell.cellIndex].style.backgroundColor = "";
-    }
-    event.target.style.backgroundColor = "";
-    event.target.parentNode.style.backgroundColor = "";
-  };
-}
