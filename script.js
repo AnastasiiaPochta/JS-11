@@ -1,218 +1,159 @@
-//blocks
+//createPerson
 
-let a = 10;
-{
-  let b = 20;
-  {
-    let c = 30;
-    // a = 10, b = 20, c = 30, d - undefined
-    b++;
-    a *= 10;
-  }
-  {
-    let c = 50;
-    // a = 100, b = 21, c = 50, d - undefined
-    b += 500;
-  }
-  {
-    const a = 100500;
-    const d = "value";
-    // a = 100500, b = 521, c - undefined, d - "value"
-    {
-      let a = -50;
-      b = 1000;
-      // a = -50, b = 1000, c - undefined, d - "value"
-    }
-    // a = 100500, b = 1000, c - undefined, d - "value"
-  }
-  //a = 100, b = 1000, c - undefined, d - undefined
-}
-//a = 100, b - undefined, c - undefined, d - undefined
+// function createPerson(name, surname) {
+//   return {
+//     name,
+//     surname,
+//     getFullName: function () {
+//       if (this.fatherName) {
+//         return `${this.name} ${this.fatherName} ${this.surname}`;
+//       } else {
+//         return `${this.name} ${this.surname}`;
+//       }
+//     },
+//   };
+// }
 
-//comparison if
+// const a = createPerson("Вася", "Пупкін");
+// const b = createPerson("Ганна", "Іванова");
+// const c = createPerson("Єлизавета", "Петрова");
 
-const age = +prompt("Скільки вам років?");
-if (age < 0) {
-  alert("ти ще не народився");
-} else if (age < 18) {
-  alert("школяр");
-} else if (age < 30) {
-  alert("молодь");
-} else if (age < 45) {
-  alert("зрілість");
-} else if (age < 60) {
-  alert("захід сонця");
-} else {
-  alert("як пенсія?");
-}
+// console.log(a.getFullName()); //Вася Пупкін
+// a.fatherName = "Іванович";
+// console.log(a.getFullName()); //Вася Іванович Пупкін
 
-//switch: sizes
+// console.log(b.getFullName()); //Ганна Іванова
 
-const userSize = prompt(
-  "Введіть Ваш розмір в міжнародному форматі: S, M, L, XL і тд"
-);
 
-switch (userSize) {
-  case "XXS":
-    alert("В США у Вас 8 розмір");
-    break;
-  case "XS":
-    alert("В США у Вас 10 розмір");
-    break;
-  case "S":
-    alert("В США у Вас 12 розмір");
-    break;
-  case "M":
-    alert("В США у Вас 14 розмір");
-    break;
-  case "L":
-    alert("В США у Вас 16 розмір");
-    break;
-  case "XL":
-    alert("В США у Вас 18 розмір");
-    break;
-  case "XXL":
-    alert("В США у Вас 20 розмір");
-    break;
-  case "XXXL":
-    alert("В США у Вас 22 розмір");
-    break;
-  default:
-    alert("Введіть корректно розімр: формат XXS, XS, S...");
-}
 
-//switch: if
+//createPersonClosure
 
-const color = prompt("Введіть колір");
+// function createPersonClosure(name, surname) {
+//   let age = 0;
+//   let fatherName = "";
+//   function getName() {
+//     return name;
+//   }
+//   function getSurname() {
+//     return surname;
+//   }
+//   function getFatherName() {
+//     return fatherName;
+//   }
+//   function getAge() {
+//     return age;
+//   }
+//   function getFullName() {
+//     return `${name} ${fatherName} ${surname}`;
+//   }
+//   function setName(newName) {
+//     if (
+//       typeof newName === "string" &&
+//       newName[0] === newName[0].toUpperCase()
+//     ) {
+//       name = newName;
+//     }
+//   }
+//   function setSurname(newSurname) {
+//     if (
+//       typeof newSurname === "string" &&
+//       newSurname[0] === newSurname[0].toUpperCase()
+//     ) {
+//       surname = newSurname;
+//     }
+//   }
+//   function setFatherName(newFatherName) {
+//     if (
+//       typeof newFatherName === "string" &&
+//       newFatherName[0] === newFatherName[0].toUpperCase()
+//     ) {
+//       fatherName = newFatherName;
+//     }
+//   }
+//   function setAge(newAge) {
+//     if (newAge >= 0 && newAge <= 100) {
+//       age = newAge;
+//     }
+//   }
+//   function setFullName(newFullname) {
+//     if (typeof newFullname === "string") {
+//       const arr = newFullname.split(" ");
+//       if (arr[0][0] === arr[0][0].toUpperCase()) {
+//         surname = arr[0];
+//       }
+//       if (arr[1][0] === arr[1][0].toUpperCase()) {
+//         name = arr[1];
+//       }
+//       if (arr[2][0] === arr[2][0].toUpperCase()) {
+//         fatherName = arr[2];
+//       }
+//     }
+//   }
+//   return {
+//     getName,
+//     getSurname,
+//     getFatherName,
+//     getAge,
+//     getFullName,
+//     setName,
+//     setSurname,
+//     setFatherName,
+//     setAge,
+//     setFullName,
+//   };
+// }
 
-if (color === "red") {
-  document.write("<div style='background-color: red;'>червоний</div>");
-  document.write(
-    "<div style='background-color: black; color: white;'>чорний</div>"
-  );
-} else if (color === "black") {
-  document.write(
-    "<div style='background-color: black; color: white;'>чорний</div>"
-  );
-} else if (color === "blue") {
-  document.write("<div style='background-color: blue;'>синій</div>");
-  document.write("<div style='background-color: green;'>зелений</div>");
-} else if (color === "green") {
-  document.write("<div style='background-color: green;'>зелений</div>");
-} else {
-  document.write("<div style='background-color: gray;'>Я не зрозумів</div>");
-}
+// const a = createPersonClosure("Вася", "Пупкін");
+// const b = createPersonClosure("Ганна", "Іванова");
+// console.log(a.getName());
+// a.setAge(15);
+// a.setAge(150);
+// b.setFullName("Петрова Ганна Миколаївна");
+// console.log(b.getFatherName());
 
-//noswitch
 
-const noSwitch = (key, cases, defaultKey = "default") => {
-  if (key in cases) {
-    return cases[key]();
-  } else {
-    return cases[defaultKey]();
-  }
-};
 
-const drink = prompt("Що ви любите пити");
-noSwitch(drink, {
-  воду: () => console.log("Найздоровіший вибір!"),
-  чай() {
-    console.log("Смачна та корисна штука. Не перестарайтеся з цукром");
-  },
-  пиво: () => console.log("Добре влітку, та в міру"),
-  віскі: function () {
-    console.log("Та ви, батечку, естет! Не забудьте лід і сигару");
-  },
-  default() {
-    console.log("шото я не зрозумів");
-  },
-});
+//createPersonClosureDestruct
 
-//closure calc
+// function createPersonClosureDestruct({
+//   name = "Анонім",
+//   surname = "Анонім",
+//   fatherName = "Анонімович",
+//   age = 0
+// } = {}) {
+//   return {
+//     name,
+//     surname,
+//     fatherName,
+//     age,
+//   };
+// }
 
-const buttonsDiv = document.getElementById("buttons");
-fetch("https://open.er-api.com/v6/latest/USD")
-  .then((res) => res.json())
-  .then((data) => {
-    const rates = data.rates;
-    const currencies = Object.keys(rates);
-    for (const currency of currencies) {
-      const btn = document.createElement("button");
-      btn.innerText = currency;
-      btn.onclick = () => {
-        const sum = prompt(
-          `Яку суму ${currency} ви хочете конвертувати в USD?`
-        );
-        const convert = (sum / rates[currency]).toFixed(2);
-        return alert(`Ви отримаєте ${convert} USDT`);
-      };
-      buttonsDiv.appendChild(btn);
-    }
-  });
+// const aa = createPersonClosureDestruct(createPerson("Вася", "Пупкін"));
+// const bb = createPersonClosureDestruct({ name: "Миколай", age: 75 });
+// console.log(aa);
+// console.log(bb);
 
-//closure calc 2
 
-const fromSelect = document.getElementById("from");
-const toSelect = document.getElementById("to");
-const amount = document.getElementById("amount");
-const resultDiv = document.getElementById("result");
-const rateDiv = document.getElementById("rate");
 
-fetch("https://open.er-api.com/v6/latest/USD")
-  .then((res) => res.json())
-  .then((data) => {
-    const rates = data.rates;
-    const currencies = Object.keys(rates);
-    for (const currency of currencies) {
-      const optn = document.createElement("option");
-      optn.innerText = currency;
-      fromSelect.appendChild(optn);
-    }
-    for (const currency of currencies) {
-      const optn = document.createElement("option");
-      optn.innerText = currency;
-      toSelect.appendChild(optn);
-    }
-    const convertCurrency = () => {
-      const cur1 = fromSelect.value;
-      const cur2 = toSelect.value;
-      const crossRate = rates[cur2] / rates[cur1];
-      const result = crossRate * amount.value;
-      rateDiv.innerText = crossRate;
-      resultDiv.innerText = result;
-    };
-    fromSelect.onchange = convertCurrency;
-    toSelect.onchange = convertCurrency;
-    amount.oninput = convertCurrency;
-  });
+//isSorted
 
-//countries and cities
+// function isSorted(...arr) {
+//   if (arr.length <= 1) {
+//     return true;
+//   }
+//   for (let i = 0; i < arr.length - 1; i++) {
+//     if (typeof arr[i] !== "number" || typeof arr[i + 1] !== "number") {
+//       return false;
+//     }
+//     if (arr[i] > arr[i + 1]) {
+//       return false;
+//     }
+//   }
+//   return true;
+// }
 
-fetch(
-  "https://raw.githubusercontent.com/russ666/all-countries-and-cities-json/master/countries.min.json"
-)
-  .then((res) => res.json())
-  .then((data) => {
-    const countries = Object.keys(data);
-    const countriesSelect = document.createElement("select");
-    const citiesSelect = document.createElement("select");
-    const cityFunc = () => {
-      citiesSelect.innerHTML = "";
-      const selected = countriesSelect.value;
-      const cities = data[selected];
-      for (const city of cities) {
-        const optn = document.createElement("option");
-        optn.innerText = city;
-        citiesSelect.appendChild(optn);
-      }
-    };
-    countriesSelect.onchange = cityFunc;
-    for (const country of countries) {
-      const optn = document.createElement("option");
-      optn.innerText = country;
-      countriesSelect.appendChild(optn);
-    }
-    cityFunc();
-    document.body.appendChild(countriesSelect);
-    document.body.appendChild(citiesSelect);
-  });
+// console.log(isSorted(1,2,3,4,6,11,22));
+// console.log(isSorted(1,2,2,6,11,22));
+// console.log(isSorted(1,2,2,6,1,22));
+
