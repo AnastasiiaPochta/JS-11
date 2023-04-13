@@ -116,88 +116,88 @@ function createPersonClosure(name, surname) {
 
 //createPersonClosureDestruct
 
-function createPersonClosureDestruct({
-  name = "Анонім",
-  surname = "Анонім",
-} = {}) {
-  let age = 0;
-  let fatherName = "";
-  function getName() {
-    return name;
-  }
-  function getSurname() {
-    return surname;
-  }
-  function getFatherName() {
-    return fatherName;
-  }
-  function getAge() {
-    return age;
-  }
-  function getFullName() {
-    return `${name} ${fatherName} ${surname}`;
-  }
-  function setName(newName) {
-    if (
-      typeof newName === "string" &&
-      newName[0] === newName[0].toUpperCase()
-    ) {
-      name = newName;
-    }
-    return name;
-  }
-  function setSurname(newSurname) {
-    if (
-      typeof newSurname === "string" &&
-      newSurname[0] === newSurname[0].toUpperCase()
-    ) {
-      surname = newSurname;
-    }
-    return surname;
-  }
-  function setFatherName(newFatherName) {
-    if (
-      typeof newFatherName === "string" &&
-      newFatherName[0] === newFatherName[0].toUpperCase()
-    ) {
-      fatherName = newFatherName;
-    }
-    return fatherName;
-  }
-  function setAge(newAge) {
-    if (newAge >= 0 && newAge <= 100) {
-      age = newAge;
-    }
-    return age;
-  }
-  function setFullName(newFullname) {
-    if (typeof newFullname === "string") {
-      const arr = newFullname.split(" ");
-      if (arr.length > 0 && arr[0][0] === arr[0][0].toUpperCase()) {
-        surname = arr[0];
-      }
-      if (arr.length > 1 && arr[1][0] === arr[1][0].toUpperCase()) {
-        name = arr[1];
-      }
-      if (arr.length > 2 && arr[2][0] === arr[2][0].toUpperCase()) {
-        fatherName = arr[2];
-      }
-    }
-    return `${surname} ${name} ${fatherName}`;
-  }
-  return {
-    getName,
-    getSurname,
-    getFatherName,
-    getAge,
-    getFullName,
-    setName,
-    setSurname,
-    setFatherName,
-    setAge,
-    setFullName,
-  };
-}
+// function createPersonClosureDestruct({
+//   name = "Анонім",
+//   surname = "Анонім",
+// } = {}) {
+//   let age = 0;
+//   let fatherName = "";
+//   function getName() {
+//     return name;
+//   }
+//   function getSurname() {
+//     return surname;
+//   }
+//   function getFatherName() {
+//     return fatherName;
+//   }
+//   function getAge() {
+//     return age;
+//   }
+//   function getFullName() {
+//     return `${name} ${fatherName} ${surname}`;
+//   }
+//   function setName(newName) {
+//     if (
+//       typeof newName === "string" &&
+//       newName[0] === newName[0].toUpperCase()
+//     ) {
+//       name = newName;
+//     }
+//     return name;
+//   }
+//   function setSurname(newSurname) {
+//     if (
+//       typeof newSurname === "string" &&
+//       newSurname[0] === newSurname[0].toUpperCase()
+//     ) {
+//       surname = newSurname;
+//     }
+//     return surname;
+//   }
+//   function setFatherName(newFatherName) {
+//     if (
+//       typeof newFatherName === "string" &&
+//       newFatherName[0] === newFatherName[0].toUpperCase()
+//     ) {
+//       fatherName = newFatherName;
+//     }
+//     return fatherName;
+//   }
+//   function setAge(newAge) {
+//     if (newAge >= 0 && newAge <= 100) {
+//       age = newAge;
+//     }
+//     return age;
+//   }
+//   function setFullName(newFullname) {
+//     if (typeof newFullname === "string") {
+//       const arr = newFullname.split(" ");
+//       if (arr.length > 0 && arr[0][0] === arr[0][0].toUpperCase()) {
+//         surname = arr[0];
+//       }
+//       if (arr.length > 1 && arr[1][0] === arr[1][0].toUpperCase()) {
+//         name = arr[1];
+//       }
+//       if (arr.length > 2 && arr[2][0] === arr[2][0].toUpperCase()) {
+//         fatherName = arr[2];
+//       }
+//     }
+//     return `${surname} ${name} ${fatherName}`;
+//   }
+//   return {
+//     getName,
+//     getSurname,
+//     getFatherName,
+//     getAge,
+//     getFullName,
+//     setName,
+//     setSurname,
+//     setFatherName,
+//     setAge,
+//     setFullName,
+//   };
+// }
 
 // const a = createPersonClosureDestruct(createPerson("Вася", "Пупкін"));
 // const b = createPersonClosureDestruct({ name: "Миколай", age: 75 });
@@ -261,50 +261,147 @@ const test = createPersonClosure("Ганна", "Іванова");
 test.setAge(15);
 test.setFullName("Петрова Ганна Миколаївна");
 
-function personForm(parent, person) {
-  const funcs = Object.keys(person);
-  for (i = 0; i < 5; i++) {
-    const input = document.createElement("input");
-    let text = person[funcs[i]];
-    let value = text();
-    input.value = `${value}`;
-    parent.appendChild(input);
-    ////Навісити кожному з них обробник події типу nameInput.oninput = () => {
-    //Тут намагаємося міняти person використовуючи person.setName.
-    // Наприклад, при зміні поля введення імені повинен запускатися setName(якийсь инпут.value)
-    // Функції set... повертають значення, і його потрібно занести назад до input.
-    //}
-    //Зверніть увагу, що при зміні ПІБ повинні змінитися поля ім'я, по батькові та прізвище
+// function personForm(parent, person) {
+//   const nameInput = document.createElement("input");
+//   nameInput.value = person.getName();
+//   const surnameInput = document.createElement("input");
+//   surnameInput.value = person.getSurname();
+//   const fatherNameInput = document.createElement("input");
+//   fatherNameInput.value = person.getFatherName();
+//   const ageInput = document.createElement("input");
+//   ageInput.value = person.getAge();
+//   const fullNameInput = document.createElement("input");
+//   fullNameInput.value = person.getFullName();
+//   parent.appendChild(nameInput);
+//   parent.appendChild(surnameInput);
+//   parent.appendChild(fatherNameInput);
+//   parent.appendChild(ageInput);
+//   parent.appendChild(fullNameInput);
+
+//   nameInput.oninput = () => {
+//     person.setName(nameInput.value);
+//     nameInput.value = person.getName();
+//     fullNameInput.value = person.getFullName();
+//   };
+
+//   surnameInput.oninput = () => {
+//     person.setSurname(surnameInput.value);
+//     surnameInput.value = person.getSurname();
+//     fullNameInput.value = person.getFullName();
+//   };
+
+//   fatherNameInput.oninput = () => {
+//     setter = person.setFatherName(fatherNameInput.value);
+//     fatherNameInput.value = person.getFatherName();
+//     fullNameInput.value = person.getFullName();
+//   };
+
+//   ageInput.oninput = () => {
+//     person.setAge(ageInput.value);
+//     ageInput.value = person.getAge();
+//   };
+
+//   fullNameInput.oninput = () => {
+//     person.setFullName(fullNameInput.value);
+//     fullNameInput.value = person.getFullName();
+//     nameInput.value = person.getName();
+//     surnameInput.value = person.getSurname();
+//     fatherNameInput.value = person.getFatherName();
+//   };
+// }
+// personForm(formDiv, test);
+
+//getSetForm
+
+function getSetForm(parent, object) {
+  let register = {};
+  const updateInputs = () => {
+    for (key in register) {
+      const getKey = `get` + key;
+      if (getKey in object) {
+        let getValue = object[getKey]();
+        register[key].value = getValue;
+      }
+    }
+  };
+  for (func in object) {
+    const isGet = func.startsWith("get");
+    const fieldName = func.slice(3);
+    const setKey = `set` + fieldName;
+    const getKey = `get` + fieldName;
+    if (isGet) {
+      const input = document.createElement("input");
+      const type = typeof object[getKey]();
+      if (type === "boolean") {
+        input.type = "checkbox";
+      } else if (type === "number") {
+        input.type = "number";
+      } else {
+        input.type = "text";
+      }
+      if (!(setKey in object)) {
+        input.disabled = true;
+      }
+      input.placeholder = `${fieldName}`;
+      input.oninput = () => {
+        object[setKey](input.value);
+        input.value = object[getKey]();
+        updateInputs();
+      };
+
+      parent.appendChild(input);
+      register[fieldName] = input;
+    }
   }
+  updateInputs();
 }
 
-// function personForm(parent, person) {
-//   const inputFields = [
-//     { label: "Ім'я", getter: person.getName, setter: person.setName },
-//     { label: "Прізвище", getter: person.getSurname, setter: person.setSurname },
-//     {
-//       label: "По батькові",
-//       getter: person.getFatherName,
-//       setter: person.setFatherName,
-//     },
-//     { label: "Вік", getter: person.getAge, setter: person.setAge },
-//     {
-//       label: "Повне ім'я",
-//       getter: person.getFullName,
-//       setter: person.setFullName,
-//     },
-//   ];
-//   for (field of inputFields) {
-//     const container = document.createElement("div");
-//     const label = document.createElement("label");
-//     label.innerText = field.label;
-//     container.appendChild(label);
-//     const input = document.createElement("input");
-//     input.type = "text";
-//     input.value = field.getter();
-//     container.appendChild(input);
-//     parent.appendChild(container);
-//   }
-// }
+let car;
+{
+  let brand = "BMW",
+    model = "X5",
+    volume = 2.4;
+  car = {
+    getBrand() {
+      return brand;
+    },
+    setBrand(newBrand) {
+      if (newBrand && typeof newBrand === "string") {
+        brand = newBrand;
+      }
+      return brand;
+    },
 
-personForm(formDiv, test);
+    getModel() {
+      return model;
+    },
+    setModel(newModel) {
+      if (newModel && typeof newModel === "string") {
+        model = newModel;
+      }
+      return model;
+    },
+
+    getVolume() {
+      return volume;
+    },
+    setVolume(newVolume) {
+      newVolume = +newVolume;
+      if (newVolume && newVolume > 0 && newVolume < 20) {
+        volume = newVolume;
+      }
+      return volume;
+    },
+
+    getTax() {
+      return volume * 100;
+    },
+  };
+}
+
+const testDiv = document.getElementById("testdiv");
+const testDiv2 = document.getElementById("testdiv2");
+
+getSetForm(formDiv, test);
+getSetForm(testDiv, createPersonClosure("Анон", "Анонов"));
+getSetForm(testDiv2, car);
