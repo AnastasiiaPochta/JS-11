@@ -24,6 +24,8 @@
 
 // console.log(b.getFullName()); //Ганна Іванова
 
+
+
 //createPersonClosure
 
 function createPersonClosure(name, surname) {
@@ -113,6 +115,8 @@ function createPersonClosure(name, surname) {
 // a.setAge(150);
 // b.setFullName("Петрова Ганна Миколаївна");
 // console.log(b.getFatherName());
+
+
 
 //createPersonClosureDestruct
 
@@ -208,6 +212,8 @@ function createPersonClosure(name, surname) {
 // b.setFullName("Петрова Ганна Олександрівна")
 // console.log(b.getFatherName()) //Олександрівна
 
+
+
 //isSorted;
 
 // function isSorted(...arr) {
@@ -228,6 +234,8 @@ function createPersonClosure(name, surname) {
 // console.log(isSorted(1, 2, 3, 4, 6, 11, 22));
 // console.log(isSorted(1, 2, 2, 6, 11, 22));
 // console.log(isSorted(1, 2, 2, 6, 1, 22));
+
+
 
 //Test isSorted
 
@@ -253,6 +261,8 @@ function createPersonClosure(name, surname) {
 //   return true;
 // }
 // console.log(isSorted());
+
+
 
 //personForm
 
@@ -310,6 +320,8 @@ test.setFullName("Петрова Ганна Миколаївна");
 //   };
 // }
 // personForm(formDiv, test);
+
+
 
 //getSetForm
 
