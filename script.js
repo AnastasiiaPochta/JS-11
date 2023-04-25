@@ -21,8 +21,6 @@
 // console.log(b.getFullName()) // Ганна Іванова
 // console.log(c.getFullName()) // Єлизавета Петрова
 
-
-
 // // Person Prototype
 
 // function Person(name, surname) {
@@ -47,55 +45,53 @@
 // console.log(b.getFullName()); // Ганна Іванова
 // console.log(c.getFullName()); // Єлизавета Петрова
 
+//Password
 
+function Password(parent, open) {
+  const inputPassword = document.createElement("input");
+  inputPassword.placeholder = "Password";
+  inputPassword.oninput = () => this.setValue(inputPassword.value);
+  parent.appendChild(inputPassword);
 
-// //Password
+  const checkVisible = document.createElement("input");
+  checkVisible.type = "checkbox";
+  checkVisible.oninput = () => this.setOpen(checkVisible.checked);
+  parent.appendChild(checkVisible);
 
-// function Password(parent, open) {
-//   const inputPassword = document.createElement("input");
-//   inputPassword.placeholder = "Password";
-//   inputPassword.oninput = () => this.setValue(inputPassword.value);
-//   parent.appendChild(inputPassword);
+  this.getValue = () => inputPassword.value;
 
-//   const checkVisible = document.createElement("input");
-//   checkVisible.type = "checkbox";
-//   checkVisible.oninput = () => this.setOpen(checkVisible.checked);
-//   parent.appendChild(checkVisible);
+  this.setValue = (newValue) => {
+    inputPassword.value = newValue;
+    if (typeof this.onChange === "function") {
+      this.onChange(inputPassword.value);
+    }
+  };
 
-//   this.getValue = () => inputPassword.value;
+  this.getOpen = () => open;
 
-//   this.setValue = (newValue) => {
-//     inputPassword.value = newValue;
-//     if (typeof this.onChange === "function") {
-//       this.onChange(inputPassword.value);
-//     }
-//   };
+  this.setOpen = (newOpen) => {
+    open = newOpen;
+    if (open) {
+      inputPassword.type = "text";
+      checkVisible.checked = true;
+    } else {
+      inputPassword.type = "password";
+      checkVisible.checked = false;
+    }
+    if (typeof this.onOpenChange === "function") {
+      this.onOpenChange(open);
+    }
+  };
 
-//   this.getOpen = () => open;
+  this.setStyle = (newStyle) => {
+    inputPassword.style.border = newStyle;
+    checkVisible.style.marginRight = "10px";
+  };
 
-//   this.setOpen = (newOpen) => {
-//     open = newOpen;
-//     if (open) {
-//       inputPassword.type = "text";
-//       checkVisible.checked = true;
-//     } else {
-//       inputPassword.type = "password";
-//       checkVisible.checked = false;
-//     }
-//     if (typeof this.onOpenChange === "function") {
-//       this.onOpenChange(open);
-//     }
-//   };
+  this.setOpen(open);
 
-//   this.setStyle = (newStyle) => {
-//     inputPassword.style.border = newStyle;
-//     checkVisible.style.marginRight = "10px";
-//   };
-
-//   this.setOpen(open);
-
-//   this.setStyle("1px solid grey");
-// }
+  this.setStyle("1px solid grey");
+}
 
 // let p = new Password(document.body, true);
 // p.onChange = (data) => console.log(data);
@@ -104,8 +100,6 @@
 // console.log(p.getValue());
 // p.setOpen(false);
 // console.log(p.getOpen());
-
-
 
 // //LoginForm
 
@@ -147,64 +141,53 @@
 //   }
 // }
 
+//LoginForm Constructor
 
+function LoginForm(parent, open) {
+  const inputLogin = document.createElement("input");
+  inputLogin.placeholder = "Login";
+  inputLogin.oninput = () => {
+    this.setLogin(inputLogin.value);
+    this.disabledButton();
+  };
+  parent.appendChild(inputLogin);
 
-// //LoginForm Constructor
+  const inputPass = new Password(parent, open);
+  inputPass.onChange = () => {
+    this.disabledButton();
+  };
 
-// function LoginForm(parent, open) {
-//   const inputLogin = document.createElement("input");
-//   inputLogin.placeholder = "Login";
-//   inputLogin.oninput = () => {
-//     this.setLogin(inputLogin.value);
-//     this.disabledButton();
-//   };
-//   parent.appendChild(inputLogin);
+  const submitButton = document.createElement("input");
+  submitButton.type = "submit";
+  submitButton.value = "Відправити";
+  submitButton.onclick = () => {
+    console.log(
+      `Sending login and password: ${this.getLogin()}, ${inputPass.getValue()}`
+    );
+    this.setLogin("");
+    inputPass.setValue("");
+    this.disabledButton();
+  };
+  container.appendChild(submitButton);
 
-//   const inputPass = new Password(parent, open);
-//   let password = "";
-//   inputPass.onChange = (data) => {
-//     this.setPassword(data);
-//     this.disabledButton();
-//   };
+  this.getLogin = () => inputLogin.value;
 
-//   const submitButton = document.createElement("input");
-//   submitButton.type = "submit";
-//   submitButton.value = "Відправити";
-//   submitButton.onclick = () => {
-//     console.log(`Sending login and password: ${inputLogin.value}, ${password}`);
-//     this.setLogin("");
-//     inputPass.setValue("");
-//     this.disabledButton();
-//   };
-//   container.appendChild(submitButton);
+  this.setLogin = (newLogin) => {
+    inputLogin.value = newLogin;
+  };
 
-//   this.getLogin = () => inputLogin.value;
+  this.disabledButton = () => {
+    if (this.getLogin().length < 1 || inputPass.getValue().length < 1) {
+      submitButton.disabled = true;
+    } else {
+      submitButton.disabled = false;
+    }
+  };
+  this.disabledButton();
+}
 
-//   this.setLogin = (newLogin) => {
-//     inputLogin.value = newLogin;
-//   };
-
-//   this.getPassword = () => password;
-
-//   this.setPassword = (newData) => {
-//     password = newData;
-//   };
-
-//   this.disabledButton = () => {
-//     let login = this.getLogin();
-//     if (login.length < 1 || password.length < 1) {
-//       submitButton.disabled = true;
-//     } else {
-//       submitButton.disabled = false;
-//     }
-//   };
-//   this.disabledButton();
-// }
-
-// const container = document.getElementById("loginForm");
-// const formnew = new LoginForm(container, false);
-
-
+const container = document.getElementById("loginForm");
+const formnew = new LoginForm(container, false);
 
 // //Password Verify
 
