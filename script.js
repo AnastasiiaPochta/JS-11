@@ -21,6 +21,8 @@
 // console.log(b.getFullName()) // Ганна Іванова
 // console.log(c.getFullName()) // Єлизавета Петрова
 
+
+
 // // Person Prototype
 
 // function Person(name, surname) {
@@ -44,6 +46,8 @@
 // console.log(a.getFullName()); // Вася Іванович Пупкін
 // console.log(b.getFullName()); // Ганна Іванова
 // console.log(c.getFullName()); // Єлизавета Петрова
+
+
 
 //Password
 
@@ -101,93 +105,97 @@ function Password(parent, open) {
 // p.setOpen(false);
 // console.log(p.getOpen());
 
-// //LoginForm
 
-// const container = document.getElementById("loginForm");
 
-// const inputLogin = document.createElement("input");
-// inputLogin.placeholder = "Login";
-// let login = "";
-// inputLogin.oninput = () => {
-//   login = inputLogin.value;
-//   disabledButton();
-// };
-// container.appendChild(inputLogin);
-
-// const inputPass = new Password(container, false);
-// let password = "";
-// inputPass.onChange = (data) => {
-//   password = data;
-//   disabledButton();
-// };
-
-// const submitButton = document.createElement("input");
-// submitButton.type = "submit";
-// submitButton.value = "Відправити";
-// submitButton.onclick = () => {
-//   console.log("Sending login and password:", login, password);
-//   inputLogin.value = "";
-//   inputPass.setValue("");
-//   disabledButton();
-// };
-// disabledButton();
-// container.appendChild(submitButton);
-
-// function disabledButton() {
-//   if (login.length < 1 || password.length < 1) {
-//     submitButton.disabled = true;
-//   } else {
-//     submitButton.disabled = false;
-//   }
-// }
-
-//LoginForm Constructor
-
-function LoginForm(parent, open) {
-  const inputLogin = document.createElement("input");
-  inputLogin.placeholder = "Login";
-  inputLogin.oninput = () => {
-    this.setLogin(inputLogin.value);
-    this.disabledButton();
-  };
-  parent.appendChild(inputLogin);
-
-  const inputPass = new Password(parent, open);
-  inputPass.onChange = () => {
-    this.disabledButton();
-  };
-
-  const submitButton = document.createElement("input");
-  submitButton.type = "submit";
-  submitButton.value = "Відправити";
-  submitButton.onclick = () => {
-    console.log(
-      `Sending login and password: ${this.getLogin()}, ${inputPass.getValue()}`
-    );
-    this.setLogin("");
-    inputPass.setValue("");
-    this.disabledButton();
-  };
-  container.appendChild(submitButton);
-
-  this.getLogin = () => inputLogin.value;
-
-  this.setLogin = (newLogin) => {
-    inputLogin.value = newLogin;
-  };
-
-  this.disabledButton = () => {
-    if (this.getLogin().length < 1 || inputPass.getValue().length < 1) {
-      submitButton.disabled = true;
-    } else {
-      submitButton.disabled = false;
-    }
-  };
-  this.disabledButton();
-}
+//LoginForm
 
 const container = document.getElementById("loginForm");
-const formnew = new LoginForm(container, false);
+
+const inputLogin = document.createElement("input");
+inputLogin.placeholder = "Login";
+let login = "";
+inputLogin.oninput = () => {
+  login = inputLogin.value;
+  disabledButton();
+};
+container.appendChild(inputLogin);
+
+const inputPass = new Password(container, false);
+inputPass.onChange = () => {
+  disabledButton();
+};
+
+const submitButton = document.createElement("input");
+submitButton.type = "submit";
+submitButton.value = "Відправити";
+submitButton.onclick = () => {
+  console.log("Sending login and password:", login, inputPass.getValue());
+  inputLogin.value = "";
+  inputPass.setValue("");
+  disabledButton();
+};
+disabledButton();
+container.appendChild(submitButton);
+
+function disabledButton() {
+  if (login.length < 1 || inputPass.getValue().length < 1) {
+    submitButton.disabled = true;
+  } else {
+    submitButton.disabled = false;
+  }
+}
+
+
+
+// //LoginForm Constructor
+
+// function LoginForm(parent, open) {
+//   const inputLogin = document.createElement("input");
+//   inputLogin.placeholder = "Login";
+//   inputLogin.oninput = () => {
+//     this.setLogin(inputLogin.value);
+//     this.disabledButton();
+//   };
+//   parent.appendChild(inputLogin);
+
+//   const inputPass = new Password(parent, open);
+//   inputPass.onChange = () => {
+//     this.disabledButton();
+//   };
+
+//   const submitButton = document.createElement("input");
+//   submitButton.type = "submit";
+//   submitButton.value = "Відправити";
+//   submitButton.onclick = () => {
+//     console.log(
+//       `Sending login and password: ${this.getLogin()}, ${inputPass.getValue()}`
+//     );
+//     this.setLogin("");
+//     inputPass.setValue("");
+//     this.disabledButton();
+//   };
+//   container.appendChild(submitButton);
+
+//   this.getLogin = () => inputLogin.value;
+
+//   this.setLogin = (newLogin) => {
+//     inputLogin.value = newLogin;
+//   };
+
+//   this.disabledButton = () => {
+//     if (this.getLogin().length < 1 || inputPass.getValue().length < 1) {
+//       submitButton.disabled = true;
+//     } else {
+//       submitButton.disabled = false;
+//     }
+//   };
+//   this.disabledButton();
+// }
+
+// const container = document.getElementById("loginForm");
+// const formnew = new LoginForm(container, false);
+
+
 
 // //Password Verify
 
