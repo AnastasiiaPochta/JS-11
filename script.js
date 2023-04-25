@@ -1,155 +1,254 @@
-//makeProfileTimer
+// //Person
 
-const makeProfileTimer = () => {
-  const start = performance.now();
-  const timer = () => {
-    const end = performance.now();
-    return end - start;
-  };
-  return timer;
-};
+// function Person(name, surname) {
+//    this.name = name;
+//    this.surname = surname;
+//    this.getFullName = () => {
+//       if (this.fatherName) {
+//         return `${this.name} ${this.fatherName} ${this.surname}`;
+//       } else {
+//         return `${this.name} ${this.surname}`;
+//       }
+//     };
+// }
 
-const timer = makeProfileTimer();
-alert("Вимiрюємо час роботи цього alert");
-alert(`Час роботи цього аlert ${timer()}`);
-const timer2 = makeProfileTimer();
-prompt("");
-alert(`Час роботи двух аlert та одного prompt ${timer()}`);
-alert(`Час роботи prompt та попереднього alert ${timer2()}`);
+// const a = new Person("Вася", "Пупкін")
+// const b = new Person("Ганна", "Іванова")
+// const c = new Person("Єлизавета", "Петрова")
 
-
-
-//makeSaver
-
-const makeSaver = (funcParam) => {
-  let savedValue = null;
-  let called = false;
-  return function () {
-    if (!called) {
-      savedValue = funcParam();
-      called = true;
-    }
-    return savedValue;
-  };
-};
-
-var saver = makeSaver(Math.random);
-var value1 = saver();
-var value2 = saver();
-
-alert(`Random: ${value1} === ${value2}`);
-
-var saver2 = makeSaver(
-  () =>
-    console.log("saved function called") ||
-    [null, undefined, false, "", 0, Math.random()][Math.ceil(Math.random() * 6)]
-);
-var value3 = saver2();
-var value4 = saver2();
-
-console.log(value3 === value4); // теж має бути true
-
-let namePrompt = prompt.bind(window, "Як тебе звуть?");
-let nameSaver = makeSaver(namePrompt);
-alert(`Привіт! Prompt ще не було!`);
-alert(`Привіт ${nameSaver()}. Щойно запустився prompt, перший та останній раз`);
-alert(`Слухай, ${nameSaver()}, го пити пиво. Адже prompt був лише один раз`);
+// a.fatherName = 'Іванович'
+// console.log(a.getFullName()) // Вася Іванович Пупкін
+// console.log(b.getFullName()) // Ганна Іванова
+// console.log(c.getFullName()) // Єлизавета Петрова
 
 
 
-//myBind
+// // Person Prototype
 
-function myBind(func, context, defaults) {
-  return function (...args) {
-    const mergedArgs = [];
-    for (let i = 0; i < defaults.length; i++) {
-      if (i >= args.length || args[i] === undefined) {
-        if (defaults[i] !== undefined) {
-          mergedArgs.push(defaults[i]);
-        }
-      } else {
-        mergedArgs.push(args[i]);
-      }
-    }
-    return func.apply(context, mergedArgs);
-  };
-}
+// function Person(name, surname) {
+//   this.name = name;
+//   this.surname = surname;
+// }
 
-var pow5 = myBind(Math.pow, Math, [, 5]);
-var cube = myBind(Math.pow, Math, [, 3]);
+// Person.prototype.getFullName = function () {
+//   if (this.fatherName) {
+//     return `${this.name} ${this.fatherName} ${this.surname}`;
+//   } else {
+//     return `${this.name} ${this.surname}`;
+//   }
+// };
 
-console.log(pow5(2)); //32
-console.log(pow5(4)); //1024
-console.log(cube(3)); //27
+// const a = new Person("Вася", "Пупкін");
+// const b = new Person("Ганна", "Іванова");
+// const c = new Person("Єлизавета", "Петрова");
 
-var chessMin = myBind(Math.min, Math, [, 4, , 5, , 8, , 9]);
-console.log(chessMin(-1, -5, 3, 15)); // результат -5
-
-var zeroPrompt = myBind(prompt, window, [undefined, "0"]);
-var someNumber = zeroPrompt("Введіть число"); // викликає prompt("Введіть число","0")
+// a.fatherName = "Іванович";
+// console.log(a.getFullName()); // Вася Іванович Пупкін
+// console.log(b.getFullName()); // Ганна Іванова
+// console.log(c.getFullName()); // Єлизавета Петрова
 
 
 
-//checkResult
+// //Password
 
-function checkResult(original, validator) {
-  function wrapper(...params) {
-    let originalResult = original.call(this, ...params);
-    while (!validator(originalResult)) {
-      originalResult = original.call(this, ...params);
-    }
-    return originalResult;
-  }
-  return wrapper;
-}
+// function Password(parent, open) {
+//   const inputPassword = document.createElement("input");
+//   inputPassword.placeholder = "Password";
+//   inputPassword.oninput = () => this.setValue(inputPassword.value);
+//   parent.appendChild(inputPassword);
 
-//numberPrompt - це функція, яка буде запускати prompt до тих пір, поки користувач не введе число
-const numberPrompt = checkResult(prompt, (x) => !isNaN(+x));
-let number = +numberPrompt("Введіть число", "0"); //параметри передаються наскрізь до оригіналу. Не забудьте передати це, використовуючи call або apply
+//   const checkVisible = document.createElement("input");
+//   checkVisible.type = "checkbox";
+//   checkVisible.oninput = () => this.setOpen(checkVisible.checked);
+//   parent.appendChild(checkVisible);
 
-//gamePrompt - це функція, яка буде запускати prompt доти, доки користувач не введе одне зі слів 'камінь', 'ножиці', 'папір'
-const gamePrompt = checkResult(prompt, (x) =>
-  ["камень", "ножиці", "папір"].includes(x.toLowerCase())
-);
-const turn = gamePrompt("Введіть щось зі списку: 'камень', 'ножиці', 'папір'");
+//   this.getValue = () => inputPassword.value;
 
-//RandomHigh. Повертає будь-яке число в діапазоні від 0.5 до 1 завдяки Math.random
-const randomHigh = checkResult(Math.random, (x) => x >= 0.5 && x <= 1);
-console.log(randomHigh());
+//   this.setValue = (newValue) => {
+//     inputPassword.value = newValue;
+//     if (typeof this.onChange === "function") {
+//       this.onChange(inputPassword.value);
+//     }
+//   };
 
-//AlwaysSayYes. Дістає користувача вікном confirm поки він не погодиться (не натисне OK)
-const alwaysSayYes = checkResult(confirm, (x) => x === true);
-const confirmer = alwaysSayYes("Погодься, в тебе немає виходу");
+//   this.getOpen = () => open;
 
-//respectMe. Дістає користувача запуском цієї функції, поки якесь із полів не введено
-const fullName = () => {
-  const lastName = prompt("Введіть Ваше прізвище").trim();
-  const name = prompt("Введіть Ваше ім'я").trim();
-  const pobatkovi = prompt("Введіть По-батькові").trim();
-  const surname =
-    lastName.slice(0, 1).toUpperCase() + lastName.slice(1).toLowerCase();
-  const correctName =
-    name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
-  const fatherName =
-    pobatkovi.slice(0, 1).toUpperCase() + pobatkovi.slice(1).toLowerCase();
-  return {
-    lastName,
-    name,
-    pobatkovi,
-    correctName,
-    surname,
-    fatherName,
-    fullName: `${surname} ${correctName} ${fatherName}`,
-  };
-};
+//   this.setOpen = (newOpen) => {
+//     open = newOpen;
+//     if (open) {
+//       inputPassword.type = "text";
+//       checkVisible.checked = true;
+//     } else {
+//       inputPassword.type = "password";
+//       checkVisible.checked = false;
+//     }
+//     if (typeof this.onOpenChange === "function") {
+//       this.onOpenChange(open);
+//     }
+//   };
 
-function fullNameValidator(fullName) {
-  return (
-    fullName.lastName.length > 0 &&
-    fullName.name.length > 0 &&
-    fullName.pobatkovi.length > 0
-  );
-}
+//   this.setStyle = (newStyle) => {
+//     inputPassword.style.border = newStyle;
+//     checkVisible.style.marginRight = "10px";
+//   };
 
-const respectMe = checkResult(fullName, fullNameValidator);
-console.log(respectMe());
+//   this.setOpen(open);
+
+//   this.setStyle("1px solid grey");
+// }
+
+// let p = new Password(document.body, true);
+// p.onChange = (data) => console.log(data);
+// p.onOpenChange = (open) => console.log(open);
+// p.setValue("qwerty");
+// console.log(p.getValue());
+// p.setOpen(false);
+// console.log(p.getOpen());
+
+
+
+// //LoginForm
+
+// const container = document.getElementById("loginForm");
+
+// const inputLogin = document.createElement("input");
+// inputLogin.placeholder = "Login";
+// let login = "";
+// inputLogin.oninput = () => {
+//   login = inputLogin.value;
+//   disabledButton();
+// };
+// container.appendChild(inputLogin);
+
+// const inputPass = new Password(container, false);
+// let password = "";
+// inputPass.onChange = (data) => {
+//   password = data;
+//   disabledButton();
+// };
+
+// const submitButton = document.createElement("input");
+// submitButton.type = "submit";
+// submitButton.value = "Відправити";
+// submitButton.onclick = () => {
+//   console.log("Sending login and password:", login, password);
+//   inputLogin.value = "";
+//   inputPass.setValue("");
+//   disabledButton();
+// };
+// disabledButton();
+// container.appendChild(submitButton);
+
+// function disabledButton() {
+//   if (login.length < 1 || password.length < 1) {
+//     submitButton.disabled = true;
+//   } else {
+//     submitButton.disabled = false;
+//   }
+// }
+
+
+
+// //LoginForm Constructor
+
+// function LoginForm(parent, open) {
+//   const inputLogin = document.createElement("input");
+//   inputLogin.placeholder = "Login";
+//   inputLogin.oninput = () => {
+//     this.setLogin(inputLogin.value);
+//     this.disabledButton();
+//   };
+//   parent.appendChild(inputLogin);
+
+//   const inputPass = new Password(parent, open);
+//   let password = "";
+//   inputPass.onChange = (data) => {
+//     this.setPassword(data);
+//     this.disabledButton();
+//   };
+
+//   const submitButton = document.createElement("input");
+//   submitButton.type = "submit";
+//   submitButton.value = "Відправити";
+//   submitButton.onclick = () => {
+//     console.log(`Sending login and password: ${inputLogin.value}, ${password}`);
+//     this.setLogin("");
+//     inputPass.setValue("");
+//     this.disabledButton();
+//   };
+//   container.appendChild(submitButton);
+
+//   this.getLogin = () => inputLogin.value;
+
+//   this.setLogin = (newLogin) => {
+//     inputLogin.value = newLogin;
+//   };
+
+//   this.getPassword = () => password;
+
+//   this.setPassword = (newData) => {
+//     password = newData;
+//   };
+
+//   this.disabledButton = () => {
+//     let login = this.getLogin();
+//     if (login.length < 1 || password.length < 1) {
+//       submitButton.disabled = true;
+//     } else {
+//       submitButton.disabled = false;
+//     }
+//   };
+//   this.disabledButton();
+// }
+
+// const container = document.getElementById("loginForm");
+// const formnew = new LoginForm(container, false);
+
+
+
+// //Password Verify
+
+// const passwordContainer = document.getElementById("password-container");
+
+// const password1 = new Password(passwordContainer, false);
+// const password2 = new Password(passwordContainer, false);
+
+// password1.onChange = (value) => {
+//   if (value !== password2.getValue()) {
+//     password2.setStyle("2px solid red");
+//   } else {
+//     password2.setStyle("");
+//   }
+// };
+
+// password1.onOpenChange = (open) => {
+//   if (open) {
+//     if (password2.getOpen() === true) {
+//       password2.setOpen(false);
+//     }
+//   } else {
+//     if (password2.getOpen() === false) {
+//       password2.setOpen(true);
+//     }
+//   }
+// };
+
+// password2.onChange = (value) => {
+//   if (value !== password1.getValue()) {
+//     password2.setStyle("2px solid red");
+//   } else {
+//     password2.setStyle("");
+//   }
+// };
+
+// password2.onOpenChange = (open) => {
+//   if (open) {
+//     if (password1.getOpen() === true) {
+//       password1.setOpen(false);
+//     }
+//   } else {
+//     if (password1.getOpen() === false) {
+//       password1.setOpen(true);
+//     }
+//   }
+// };
