@@ -6,17 +6,20 @@ function reducer(state, { type, what, quantity, money }) {
       Beer: { q: 150, price: 99.0},
       Chips: { q: 190, price: 78.0},
       Cigaretts: { q: 250, price: 169.0},
-      Casa: money
+      Casa: money,
+      Income: 0
     };
   }
   if (type === "КУПИТИ") {
     if (quantity <= state[what].q) {
       if (money >= quantity * state[what].price) {
-        alert(`Ви придбали ${quantity} ${what} за ${quantity * state[what].price} грн. Ваша здача: ${money - quantity * state[what].price} грн`)
+        const totalCost = quantity * state[what].price;
+        alert(`Ви придбали ${quantity} ${what} за ${totalCost} грн. Ваша здача: ${money - totalCost} грн`)
         return {
           ...state,
           [what]: { ...state[what], q: state[what].q - quantity },
-          Casa: money - quantity * state[what].price
+          Casa: money - totalCost,
+          Income: state.Income + totalCost
         };
       } else {
         alert('Вибачте, ви внесли недостатньо коштів!');
@@ -97,6 +100,8 @@ const quantRenew = () => {
   qBeer.innerText = `${store.getState().Beer.q}`;
   qChips.innerText = `${store.getState().Chips.q}`;
   qCigaretts.innerText = `${store.getState().Cigaretts.q}`;
+  document.title = `Ми заробили: ${store.getState().Income} грн`;
 }
 store.subscribe(quantRenew);
 quantRenew();
+
