@@ -1,245 +1,107 @@
-// //Person
+//redux Homework
 
-// function Person(name, surname) {
-//    this.name = name;
-//    this.surname = surname;
-//    this.getFullName = () => {
-//       if (this.fatherName) {
-//         return `${this.name} ${this.fatherName} ${this.surname}`;
-//       } else {
-//         return `${this.name} ${this.surname}`;
-//       }
-//     };
-// }
-
-// const a = new Person("Вася", "Пупкін")
-// const b = new Person("Ганна", "Іванова")
-// const c = new Person("Єлизавета", "Петрова")
-
-// a.fatherName = 'Іванович'
-// console.log(a.getFullName()) // Вася Іванович Пупкін
-// console.log(b.getFullName()) // Ганна Іванова
-// console.log(c.getFullName()) // Єлизавета Петрова
-
-
-
-// // Person Prototype
-
-// function Person(name, surname) {
-//   this.name = name;
-//   this.surname = surname;
-// }
-
-// Person.prototype.getFullName = function () {
-//   if (this.fatherName) {
-//     return `${this.name} ${this.fatherName} ${this.surname}`;
-//   } else {
-//     return `${this.name} ${this.surname}`;
-//   }
-// };
-
-// const a = new Person("Вася", "Пупкін");
-// const b = new Person("Ганна", "Іванова");
-// const c = new Person("Єлизавета", "Петрова");
-
-// a.fatherName = "Іванович";
-// console.log(a.getFullName()); // Вася Іванович Пупкін
-// console.log(b.getFullName()); // Ганна Іванова
-// console.log(c.getFullName()); // Єлизавета Петрова
-
-
-
-//Password
-
-function Password(parent, open) {
-  const inputPassword = document.createElement("input");
-  inputPassword.placeholder = "Password";
-  inputPassword.oninput = () => this.setValue(inputPassword.value);
-  parent.appendChild(inputPassword);
-
-  const checkVisible = document.createElement("input");
-  checkVisible.type = "checkbox";
-  checkVisible.oninput = () => this.setOpen(checkVisible.checked);
-  parent.appendChild(checkVisible);
-
-  this.getValue = () => inputPassword.value;
-
-  this.setValue = (newValue) => {
-    inputPassword.value = newValue;
-    if (typeof this.onChange === "function") {
-      this.onChange(inputPassword.value);
-    }
-  };
-
-  this.getOpen = () => open;
-
-  this.setOpen = (newOpen) => {
-    open = newOpen;
-    if (open) {
-      inputPassword.type = "text";
-      checkVisible.checked = true;
+function reducer(state, { type, what, quantity, money }) {
+  if (!state) {
+    return {
+      Beer: { q: 150, price: 99.0},
+      Chips: { q: 190, price: 78.0},
+      Cigaretts: { q: 250, price: 169.0},
+      Casa: money,
+      Income: 0
+    };
+  }
+  if (type === "КУПИТИ") {
+    if (quantity <= state[what].q) {
+      if (money >= quantity * state[what].price) {
+        const totalCost = quantity * state[what].price;
+        alert(`Ви придбали ${quantity} ${what} за ${totalCost} грн. Ваша здача: ${money - totalCost} грн`)
+        return {
+          ...state,
+          [what]: { ...state[what], q: state[what].q - quantity },
+          Casa: money - totalCost,
+          Income: state.Income + totalCost
+        };
+      } else {
+        alert('Вибачте, ви внесли недостатньо коштів!');
+      }
     } else {
-      inputPassword.type = "password";
-      checkVisible.checked = false;
+      alert('Вибачте, товар поки що відсутній');
     }
-    if (typeof this.onOpenChange === "function") {
-      this.onOpenChange(open);
-    }
-  };
-
-  this.setStyle = (newStyle) => {
-    inputPassword.style.border = newStyle;
-    checkVisible.style.marginRight = "10px";
-  };
-
-  this.setOpen(open);
-
-  this.setStyle("1px solid grey");
-}
-
-// let p = new Password(document.body, true);
-// p.onChange = (data) => console.log(data);
-// p.onOpenChange = (open) => console.log(open);
-// p.setValue("qwerty");
-// console.log(p.getValue());
-// p.setOpen(false);
-// console.log(p.getOpen());
-
-
-
-//LoginForm
-
-const container = document.getElementById("loginForm");
-
-const inputLogin = document.createElement("input");
-inputLogin.placeholder = "Login";
-let login = "";
-inputLogin.oninput = () => {
-  login = inputLogin.value;
-  disabledButton();
-};
-container.appendChild(inputLogin);
-
-const inputPass = new Password(container, false);
-inputPass.onChange = () => {
-  disabledButton();
-};
-
-const submitButton = document.createElement("input");
-submitButton.type = "submit";
-submitButton.value = "Відправити";
-submitButton.onclick = () => {
-  console.log("Sending login and password:", login, inputPass.getValue());
-  inputLogin.value = "";
-  inputPass.setValue("");
-  disabledButton();
-};
-disabledButton();
-container.appendChild(submitButton);
-
-function disabledButton() {
-  if (login.length < 1 || inputPass.getValue().length < 1) {
-    submitButton.disabled = true;
-  } else {
-    submitButton.disabled = false;
+    return state;
   }
 }
 
+function createStore(reducer) {
+  let state = reducer(undefined, {});
+  let cbs = [];
 
+  const getState = () => state;
+  const subscribe = (cb) => (
+    cbs.push(cb),
+    () => (cbs = cbs.filter((c) => c !== cb))
+  );
 
-// //LoginForm Constructor
+  const dispatch = (action) => {
+    const newState = reducer(state, action);
+    if (newState !== state) {
+      state = newState;
+      for (let cb of cbs) cb();
+    }
+  };
 
-// function LoginForm(parent, open) {
-//   const inputLogin = document.createElement("input");
-//   inputLogin.placeholder = "Login";
-//   inputLogin.oninput = () => {
-//     this.setLogin(inputLogin.value);
-//     this.disabledButton();
-//   };
-//   parent.appendChild(inputLogin);
+  return {
+    getState,
+    dispatch,
+    subscribe,
+  };
+}
 
-//   const inputPass = new Password(parent, open);
-//   inputPass.onChange = () => {
-//     this.disabledButton();
-//   };
+const store = createStore(reducer);
 
-//   const submitButton = document.createElement("input");
-//   submitButton.type = "submit";
-//   submitButton.value = "Відправити";
-//   submitButton.onclick = () => {
-//     console.log(
-//       `Sending login and password: ${this.getLogin()}, ${inputPass.getValue()}`
-//     );
-//     this.setLogin("");
-//     inputPass.setValue("");
-//     this.disabledButton();
-//   };
-//   container.appendChild(submitButton);
+const but = document.getElementById("buy");
 
-//   this.getLogin = () => inputLogin.value;
+const inputM = document.getElementById("money");
+let money = inputM.value;
+inputM.onchange = () => {
+  money = inputM.value;
+}
 
-//   this.setLogin = (newLogin) => {
-//     inputLogin.value = newLogin;
-//   };
+const select = document.getElementById("products");
+let what = select.value;
+select.onchange = () => {
+  what = select.value;
+}
 
-//   this.disabledButton = () => {
-//     if (this.getLogin().length < 1 || inputPass.getValue().length < 1) {
-//       submitButton.disabled = true;
-//     } else {
-//       submitButton.disabled = false;
-//     }
-//   };
-//   this.disabledButton();
-// }
+const inputQ = document.getElementById("quantity");
+let quantity = inputQ.value;
+inputQ.onchange = () => {
+  quantity = inputQ.value;
+}
 
-// const container = document.getElementById("loginForm");
-// const formnew = new LoginForm(container, false);
+const actionCreator = (what, quantity, money) => ({
+  type: "КУПИТИ",
+  what,
+  quantity,
+  money,
+});
 
+but.onclick = () => {
+  store.dispatch(actionCreator(what, quantity, money));
+  inputM.value = '';
+  select.value = '';
+  inputQ.value = '';
+}
 
+const qBeer= document.getElementById("q_beer");
+const qChips= document.getElementById("q_chips");
+const qCigaretts= document.getElementById("q_cigaretts");
 
-// //Password Verify
+const quantRenew = () => {
+  qBeer.innerText = `${store.getState().Beer.q}`;
+  qChips.innerText = `${store.getState().Chips.q}`;
+  qCigaretts.innerText = `${store.getState().Cigaretts.q}`;
+  document.title = `Ми заробили: ${store.getState().Income} грн`;
+}
+store.subscribe(quantRenew);
+quantRenew();
 
-// const passwordContainer = document.getElementById("password-container");
-
-// const password1 = new Password(passwordContainer, false);
-// const password2 = new Password(passwordContainer, false);
-
-// password1.onChange = (value) => {
-//   if (value !== password2.getValue()) {
-//     password2.setStyle("2px solid red");
-//   } else {
-//     password2.setStyle("");
-//   }
-// };
-
-// password1.onOpenChange = (open) => {
-//   if (open) {
-//     if (password2.getOpen() === true) {
-//       password2.setOpen(false);
-//     }
-//   } else {
-//     if (password2.getOpen() === false) {
-//       password2.setOpen(true);
-//     }
-//   }
-// };
-
-// password2.onChange = (value) => {
-//   if (value !== password1.getValue()) {
-//     password2.setStyle("2px solid red");
-//   } else {
-//     password2.setStyle("");
-//   }
-// };
-
-// password2.onOpenChange = (open) => {
-//   if (open) {
-//     if (password1.getOpen() === true) {
-//       password1.setOpen(false);
-//     }
-//   } else {
-//     if (password1.getOpen() === false) {
-//       password1.setOpen(true);
-//     }
-//   }
-// };

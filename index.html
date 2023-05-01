@@ -1,20 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homework</title>
-  </head>
-  <body>
-    <h2>Homework lesson 23</h2>
-    <div>
-      <forn id="loginForm"></forn>
-    </div>
-    <div>
-      <h3>Enter password:</h3>
-      <div id="password-container"></div>
-    </div>
-    <script src="./script.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Homework</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <h2>Homework lesson 24</h2>
+  <main>
+    <article>
+      <div id="beer">
+        <h3>Beer</h3>
+        <div class="img"><img src="./img/пиво.png" alt="beer"></div>
+        <p>Залишок:</p><span id="q_beer"></span>
+        <p>Ціна:</p><span class="price">99.00</span>
+      </div>
+      <div id="chips">
+        <h3>Chips</h3>
+        <div class="img"><img src="./img/chips.png" alt="chips"></div>
+        <p>Залишок:</p><span id="q_chips"></span>
+        <p>Ціна:</p><span class="price">78.00</span>
+      </div>
+      <div id="cigaretts">
+        <h3>Cigaretts</h3>
+        <div class="img"><img src="./img/ciga.png" alt="cigaretts"></div>
+        <p>Залишок:</p><span id="q_cigaretts"></span>
+        <p>Ціна:</p><span class="price">169.00</span>
+      </div>
+    </article>
+    <article>
+      <div id="casa_obj">
+        <h3>Cassa</h3>
+        <div class="img"><img src="./img/casa.png" alt="cassa"></div>
+      </div>
+      <div id="checkout">
+        <p><label for="money">Доступні кошти:</label><input id="money" type="number"></p>
+        <p><label for="products">Вибрати продукт:</label>
+          <select id="products">
+            <option>Beer</option>
+            <option>Chips</option>
+            <option>Cigaretts</option>
+          </select>
+        </p>
+        <p><p><label for="quantity">Кількість:</label><input id="quantity" type="number"></p></p>
+        <p><input type="submit" id="buy" value="Купити"></input></p>
+      </div>
+    </article>
+  </main>
+  <script src="./script.js"></script>
+</body>
+
 </html>
