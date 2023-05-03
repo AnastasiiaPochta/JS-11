@@ -1,107 +1,205 @@
-//redux Homework
+//Рекурсія: HTML tree
 
-function reducer(state, { type, what, quantity, money }) {
-  if (!state) {
-    return {
-      Beer: { q: 150, price: 99.0},
-      Chips: { q: 190, price: 78.0},
-      Cigaretts: { q: 250, price: 169.0},
-      Casa: money,
-      Income: 0
-    };
-  }
-  if (type === "КУПИТИ") {
-    if (quantity <= state[what].q) {
-      if (money >= quantity * state[what].price) {
-        const totalCost = quantity * state[what].price;
-        alert(`Ви придбали ${quantity} ${what} за ${totalCost} грн. Ваша здача: ${money - totalCost} грн`)
-        return {
-          ...state,
-          [what]: { ...state[what], q: state[what].q - quantity },
-          Casa: money - totalCost,
-          Income: state.Income + totalCost
-        };
-      } else {
-        alert('Вибачте, ви внесли недостатньо коштів!');
+const table = {
+  tagName: "table",
+  attrs: {
+    border: "1",
+  },
+  children: [
+    {
+      tagName: "tr",
+      children: [
+        {
+          tagName: "td",
+          children: ["1x1"],
+        },
+        {
+          tagName: "td",
+          children: ["1x2"],
+        },
+      ],
+    },
+    {
+      tagName: "tr",
+      children: [
+        {
+          tagName: "td",
+          children: ["2x1"],
+        },
+        {
+          tagName: "td",
+          children: ["2x2"],
+        },
+      ],
+    },
+  ],
+};
+
+const body = {
+  tagName: "body",
+  children: [
+    {
+      tagName: "div",
+      children: [
+        {
+          tagName: "span",
+          children: ["Enter a data please:"],
+        },
+        {
+          tagName: "br",
+        },
+        {
+          tagName: "input",
+          attrs: {
+            type: "text",
+            id: "name",
+          },
+        },
+        {
+          tagName: "input",
+          attrs: {
+            type: "text",
+            id: "surname",
+          },
+        },
+      ],
+    },
+    {
+      tagName: "div",
+      children: [
+        {
+          tagName: "button",
+          attrs: {
+            id: "ok",
+          },
+          children: ["OK"],
+        },
+        {
+          tagName: "button",
+          attrs: {
+            id: "cancel",
+          },
+          children: ["Cancel"],
+        },
+      ],
+    },
+  ],
+};
+
+function htmlTree(parent) {
+  let str = "";
+  for (const key in parent) {
+    if (key === "tagName") {
+      str += "<";
+      str += parent.tagName;
+      if (parent.attrs) {
+        for (const attr in parent.attrs) {
+          str += ` ${attr}='${parent.attrs[attr]}'`
+        }
       }
-    } else {
-      alert('Вибачте, товар поки що відсутній');
+      str += ">";
+      if (parent.children) {
+        if (parent.children.length > 1) {
+          for (const child of parent.children) {
+            str += htmlTree(child);
+          }
+        } else {
+          str += `'${parent.children[0]}'`;
+        }
+      }
+      str += `</${parent.tagName}>`;
     }
-    return state;
+  }
+  return str;
+}
+
+document.write(htmlTree(table));
+document.write(htmlTree(body));
+
+
+
+// Рекурсія: DOM tree
+
+function domTree(parent, container) {
+  for (const key in parent) {
+    if (key === "tagName") {
+      const tagName = `${parent.tagName}`;
+      const tag = document.createElement(tagName);
+      if (parent.attrs) {
+        for (const attr in parent.attrs) {
+          const attrName = `${attr}`;
+          tag[attrName] = `${parent.attrs[attr]}`;
+        }
+      }
+      if (parent.children) {
+        if (parent.children.length > 1) {
+          for (const child of parent.children) {
+            domTree(child, tag);
+          }
+        } else {
+          tag.innerHTML = `'${parent.children[0]}'`;
+        }
+      }
+      container.append(tag);
+    }
   }
 }
 
-function createStore(reducer) {
-  let state = reducer(undefined, {});
-  let cbs = [];
+domTree(table, document.body);
+domTree(body, document.body);
 
-  const getState = () => state;
-  const subscribe = (cb) => (
-    cbs.push(cb),
-    () => (cbs = cbs.filter((c) => c !== cb))
-  );
 
-  const dispatch = (action) => {
-    const newState = reducer(state, action);
-    if (newState !== state) {
-      state = newState;
-      for (let cb of cbs) cb();
+
+//Рекурсія: Deep Copy
+
+const deepCopy = (copied) => {
+  if (Array.isArray(copied)) {
+    const copy = [];
+    for (const element of copied) {
+      if (Array.isArray(element)) {
+        const copy2 = element.slice();
+        copy.push(deepCopy(copy2));
+      } else if (typeof element === "object" && element !== null) {
+        const copy2 = {};
+        for (const key in element) {
+          copy2[key] = deepCopy(element[key]);
+        }
+        copy.push(copy2);
+      } else {
+        copy.push(element);
+      }
     }
-  };
+    return copy;
+  } else if (typeof copied === "object" && copied !== null) {
+    const copy = {};
+    for (const element in copied) {
+      if (Array.isArray(copied[element])) {
+        const copy2 = copied[element].slice();
+        copy[element] = deepCopy(copy2);
+      } else if (typeof copied[element] === "object" && copied[element] !== null) {
+        copy[element] = deepCopy(copied[element]);
+      } else {
+        copy[element] = copied[element];
+      }
+    }
+    return copy;
+  } else {
+    return copied;
+  }
+};
 
-  return {
-    getState,
-    dispatch,
-    subscribe,
-  };
-}
+const arr = [
+  1,
+  "string",
+  null,
+  undefined,
+  { a: 15, b: 10, c: [1, 2, 3, 4], d: undefined, e: true },
+  true,
+  false,
+];
 
-const store = createStore(reducer);
+const arr2 = deepCopy(arr);
+const table2 = deepCopy(table); 
 
-const but = document.getElementById("buy");
-
-const inputM = document.getElementById("money");
-let money = inputM.value;
-inputM.onchange = () => {
-  money = inputM.value;
-}
-
-const select = document.getElementById("products");
-let what = select.value;
-select.onchange = () => {
-  what = select.value;
-}
-
-const inputQ = document.getElementById("quantity");
-let quantity = inputQ.value;
-inputQ.onchange = () => {
-  quantity = inputQ.value;
-}
-
-const actionCreator = (what, quantity, money) => ({
-  type: "КУПИТИ",
-  what,
-  quantity,
-  money,
-});
-
-but.onclick = () => {
-  store.dispatch(actionCreator(what, quantity, money));
-  inputM.value = '';
-  select.value = '';
-  inputQ.value = '';
-}
-
-const qBeer= document.getElementById("q_beer");
-const qChips= document.getElementById("q_chips");
-const qCigaretts= document.getElementById("q_cigaretts");
-
-const quantRenew = () => {
-  qBeer.innerText = `${store.getState().Beer.q}`;
-  qChips.innerText = `${store.getState().Chips.q}`;
-  qCigaretts.innerText = `${store.getState().Cigaretts.q}`;
-  document.title = `Ми заробили: ${store.getState().Income} грн`;
-}
-store.subscribe(quantRenew);
-quantRenew();
-
+console.log(arr2);
+console.log(table2);
