@@ -94,7 +94,7 @@ function htmlTree(parent) {
       str += parent.tagName;
       if (parent.attrs) {
         for (const attr in parent.attrs) {
-          str += ` ${attr}='${parent.attrs[attr]}'`
+          str += ` ${attr}='${parent.attrs[attr]}'`;
         }
       }
       str += ">";
@@ -176,7 +176,10 @@ const deepCopy = (copied) => {
       if (Array.isArray(copied[element])) {
         const copy2 = copied[element].slice();
         copy[element] = deepCopy(copy2);
-      } else if (typeof copied[element] === "object" && copied[element] !== null) {
+      } else if (
+        typeof copied[element] === "object" &&
+        copied[element] !== null
+      ) {
         copy[element] = deepCopy(copied[element]);
       } else {
         copy[element] = copied[element];
@@ -199,7 +202,76 @@ const arr = [
 ];
 
 const arr2 = deepCopy(arr);
-const table2 = deepCopy(table); 
+const table2 = deepCopy(table);
 
 console.log(arr2);
 console.log(table2);
+
+
+
+//Рекурсия: My Stringify
+
+const stringify = (argument) => {
+  if (Array.isArray(argument)) {
+    let result = "[";
+    for (let i = 0; i < argument.length; i++) {
+      const value = argument[i];
+      if (typeof value !== "undefined") {
+        result += stringify(value);
+        if (i < argument.length - 1) {
+          result += ",";
+        }
+      }
+    }
+    result += "]";
+    return result;
+  } else if (typeof argument === "object" && argument !== null) {
+    let result = "{";
+    let keys = Object.keys(argument);
+    for (let i = 0; i < keys.length; i++) {
+      const value = argument[keys[i]];
+      if (typeof value !== "undefined") {
+        result += '"' + keys[i] + '":';
+        result += stringify(value);
+        if (i < keys.length - 1) {
+          result += ",";
+        }
+      }
+    }
+    result += "}";
+    return result;
+  } else if (typeof argument === "string") {
+    return '"' + argument + '"';
+  } else {
+    return argument;
+  }
+};
+
+const jsonString = stringify(arr);
+const jsonString2 = stringify(table);
+console.log(JSON.parse(jsonString));
+console.log(JSON.parse(jsonString2));
+
+
+
+//Рекурсія: getElementById throw
+
+function getElementById(idToFind) {
+  function walker(node) {
+    if (node.id === idToFind) {
+      throw node;
+    }
+    if (node.children && node.children.length > 0) {
+      for (let i = 0; i < node.children.length; i++) {
+        const child = node.children[i];
+        walker(child);
+      }
+    }
+  }
+  try {
+    walker(document.body);
+  } catch (foundNode) {
+    return foundNode;
+  }
+  return null;
+}
