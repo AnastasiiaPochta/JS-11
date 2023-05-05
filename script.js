@@ -257,21 +257,18 @@ console.log(JSON.parse(jsonString2));
 //Рекурсія: getElementById throw
 
 function getElementById(idToFind) {
-  function walker(node) {
-    if (node.id === idToFind) {
-      throw node;
+  function walker(parent) {
+    if (parent.id === idToFind) {
+      throw parent;
     }
-    if (node.children && node.children.length > 0) {
-      for (let i = 0; i < node.children.length; i++) {
-        const child = node.children[i];
-        walker(child);
-      }
+    for (const child of parent.children) {
+      walker(child);
     }
   }
   try {
     walker(document.body);
-  } catch (foundNode) {
-    return foundNode;
+  } catch (found) {
+    return found;
   }
   return null;
 }
