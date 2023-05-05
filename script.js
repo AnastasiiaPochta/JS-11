@@ -263,10 +263,9 @@ function getElementById(idToFind) {
     }
     for (const child of parent.children) {
       walker(child);
-
     }
   }
-   try {
+  try {
     walker(document.body);
   } catch (found) {
     return found;
