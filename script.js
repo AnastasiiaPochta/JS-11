@@ -240,6 +240,8 @@ function LoginForm(parent, open) {
 
   this.getLogin = () => inputLogin.value;
 
+  this.getPassword = () => inputPass.getValue();
+
   this.setLogin = (newLogin) => {
     inputLogin.value = newLogin;
   };
@@ -254,12 +256,16 @@ function LoginForm(parent, open) {
   this.disabledButton();
 }
 
-function loginPromise(parent){
-  function executor(resolve, reject){
+function loginPromise(parent) {
+  function executor(resolve, reject) {
     const form = new LoginForm(parent);
-
+    const login = form.getLogin();
+    const password = form.getPassword();
+    resolve({ login, password });
   }
-  return new Promise(executor)
+  return new Promise(executor);
 }
 
-loginPromise(document.body).then(({login, password}) => console.log(`Ви ввели ${login} та ${password}`))
+loginPromise(document.body).then(({ login, password }) =>
+  console.log(`Ви ввели ${login} та ${password}`)
+);
