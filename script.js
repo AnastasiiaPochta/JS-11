@@ -1,274 +1,271 @@
-//Рекурсія: HTML tree
+//fetch basic
 
-const table = {
-  tagName: "table",
-  attrs: {
-    border: "1",
-  },
-  children: [
-    {
-      tagName: "tr",
-      children: [
-        {
-          tagName: "td",
-          children: ["1x1"],
-        },
-        {
-          tagName: "td",
-          children: ["1x2"],
-        },
-      ],
-    },
-    {
-      tagName: "tr",
-      children: [
-        {
-          tagName: "td",
-          children: ["2x1"],
-        },
-        {
-          tagName: "td",
-          children: ["2x2"],
-        },
-      ],
-    },
-  ],
-};
-
-const body = {
-  tagName: "body",
-  children: [
-    {
-      tagName: "div",
-      children: [
-        {
-          tagName: "span",
-          children: ["Enter a data please:"],
-        },
-        {
-          tagName: "br",
-        },
-        {
-          tagName: "input",
-          attrs: {
-            type: "text",
-            id: "name",
-          },
-        },
-        {
-          tagName: "input",
-          attrs: {
-            type: "text",
-            id: "surname",
-          },
-        },
-      ],
-    },
-    {
-      tagName: "div",
-      children: [
-        {
-          tagName: "button",
-          attrs: {
-            id: "ok",
-          },
-          children: ["OK"],
-        },
-        {
-          tagName: "button",
-          attrs: {
-            id: "cancel",
-          },
-          children: ["Cancel"],
-        },
-      ],
-    },
-  ],
-};
-
-function htmlTree(parent) {
-  let str = "";
-  for (const key in parent) {
-    if (key === "tagName") {
-      str += "<";
-      str += parent.tagName;
-      if (parent.attrs) {
-        for (const attr in parent.attrs) {
-          str += ` ${attr}='${parent.attrs[attr]}'`;
-        }
-      }
-      str += ">";
-      if (parent.children) {
-        if (parent.children.length > 1) {
-          for (const child of parent.children) {
-            str += htmlTree(child);
-          }
-        } else {
-          str += `'${parent.children[0]}'`;
-        }
-      }
-      str += `</${parent.tagName}>`;
+const fetchBasic = (container, json) => {
+  const table = document.createElement("table");
+  const header = table.insertRow();
+  for (let key in json) {
+    const text = json[key];
+    if (text.length > 0) {
+      const headerCell = document.createElement("th");
+      headerCell.innerHTML = key;
+      header.appendChild(headerCell);
     }
   }
-  return str;
-}
-
-document.write(htmlTree(table));
-document.write(htmlTree(body));
-
-
-
-// Рекурсія: DOM tree
-
-function domTree(parent, container) {
-  for (const key in parent) {
-    if (key === "tagName") {
-      const tagName = `${parent.tagName}`;
-      const tag = document.createElement(tagName);
-      if (parent.attrs) {
-        for (const attr in parent.attrs) {
-          const attrName = `${attr}`;
-          tag[attrName] = `${parent.attrs[attr]}`;
+  const data = table.insertRow();
+  for (let key in json) {
+    const text = json[key];
+    if (text.length > 0) {
+      const dataCell = document.createElement("td");
+      if (Array.isArray(text)) {
+        for (let str of text) {
+          const formatter = document.createElement("tr");
+          formatter.innerHTML = str;
+          dataCell.appendChild(formatter);
         }
-      }
-      if (parent.children) {
-        if (parent.children.length > 1) {
-          for (const child of parent.children) {
-            domTree(child, tag);
-          }
-        } else {
-          tag.innerHTML = `'${parent.children[0]}'`;
-        }
-      }
-      container.append(tag);
-    }
-  }
-}
-
-domTree(table, document.body);
-domTree(body, document.body);
-
-
-
-//Рекурсія: Deep Copy
-
-const deepCopy = (copied) => {
-  if (Array.isArray(copied)) {
-    const copy = [];
-    for (const element of copied) {
-      if (Array.isArray(element)) {
-        const copy2 = element.slice();
-        copy.push(deepCopy(copy2));
-      } else if (typeof element === "object" && element !== null) {
-        const copy2 = {};
-        for (const key in element) {
-          copy2[key] = deepCopy(element[key]);
-        }
-        copy.push(copy2);
       } else {
-        copy.push(element);
+        dataCell.innerHTML = text;
       }
+      data.appendChild(dataCell);
     }
-    return copy;
-  } else if (typeof copied === "object" && copied !== null) {
-    const copy = {};
-    for (const element in copied) {
-      if (Array.isArray(copied[element])) {
-        const copy2 = copied[element].slice();
-        copy[element] = deepCopy(copy2);
-      } else if (
-        typeof copied[element] === "object" &&
-        copied[element] !== null
-      ) {
-        copy[element] = deepCopy(copied[element]);
+  }
+  container.appendChild(table);
+};
+
+fetch("https://swapi.dev/api/people/1/")
+  .then((res) => res.json())
+  .then((luke) => fetchBasic(document.body, luke));
+
+
+
+//fetch improved
+
+const fetchImproved = (container, json) => {
+  const table = document.createElement("table");
+  const header = table.insertRow();
+  for (let key in json) {
+    const text = json[key];
+    if (text.length > 0) {
+      const headerCell = document.createElement("th");
+      headerCell.innerHTML = key;
+      header.appendChild(headerCell);
+    }
+  }
+  const data = table.insertRow();
+  for (let key in json) {
+    const text = json[key];
+    if (text.length > 0) {
+      const dataCell = document.createElement("td");
+      if (Array.isArray(text)) {
+        for (let str of text) {
+          if (str.includes("https://swapi.dev/api/")) {
+            const butt = document.createElement("button");
+            butt.innerText = str;
+            butt.onclick = () => {
+              fetch(`${butt.innerText}`)
+                .then((res) => res.json())
+                .then((data) => fetchImproved(butt, data));
+            };
+            dataCell.appendChild(butt);
+          } else {
+            const formatter = document.createElement("tr");
+            formatter.innerHTML = str;
+            dataCell.appendChild(formatter);
+          }
+        }
       } else {
-        copy[element] = copied[element];
-      }
-    }
-    return copy;
-  } else {
-    return copied;
-  }
-};
-
-const arr = [
-  1,
-  "string",
-  null,
-  undefined,
-  { a: 15, b: 10, c: [1, 2, 3, 4], d: undefined, e: true },
-  true,
-  false,
-];
-
-const arr2 = deepCopy(arr);
-const table2 = deepCopy(table);
-
-console.log(arr2);
-console.log(table2);
-
-
-
-//Рекурсия: My Stringify
-
-const stringify = (argument) => {
-  if (Array.isArray(argument)) {
-    let result = "[";
-    for (let i = 0; i < argument.length; i++) {
-      const value = argument[i];
-      if (typeof value !== "undefined") {
-        result += stringify(value);
-        if (i < argument.length - 1) {
-          result += ",";
+        if (text.includes("https://swapi.dev/api/")) {
+          const butt = document.createElement("button");
+          butt.innerText = text;
+          butt.onclick = () => {
+            fetch(`${butt.innerText}`)
+              .then((res) => res.json())
+              .then((data) => fetchImproved(butt, data));
+          };
+          dataCell.appendChild(butt);
+        } else {
+          dataCell.innerHTML = text;
         }
       }
+      data.appendChild(dataCell);
     }
-    result += "]";
-    return result;
-  } else if (typeof argument === "object" && argument !== null) {
-    let result = "{";
-    let keys = Object.keys(argument);
-    for (let i = 0; i < keys.length; i++) {
-      const value = argument[keys[i]];
-      if (typeof value !== "undefined") {
-        result += '"' + keys[i] + '":';
-        result += stringify(value);
-        if (i < keys.length - 1) {
-          result += ",";
-        }
-      }
-    }
-    result += "}";
-    return result;
-  } else if (typeof argument === "string") {
-    return '"' + argument + '"';
-  } else {
-    return argument;
   }
+  container.appendChild(table);
 };
 
-const jsonString = stringify(arr);
-const jsonString2 = stringify(table);
-console.log(JSON.parse(jsonString));
-console.log(JSON.parse(jsonString2));
+fetch("https://swapi.dev/api/people/1/")
+  .then((res) => res.json())
+  .then((luke) => fetchImproved(document.body, luke));
 
 
 
-//Рекурсія: getElementById throw
+//race
 
-function getElementById(idToFind) {
-  function walker(parent) {
-    if (parent.id === idToFind) {
-      throw parent;
-    }
-    for (const child of parent.children) {
-      walker(child);
-    }
+const myfetch = fetch("https://swapi.dev/api/people/1");
+
+function delay(ms) {
+  function executor(fulfill) {
+    setTimeout(() => fulfill(ms), ms);
   }
-  try {
-    walker(document.body);
-  } catch (found) {
-    return found;
-  }
-  return null;
+  return new Promise(executor);
 }
+
+const randomTime = Math.floor(Math.random() * 5000);
+
+const delays = delay(randomTime);
+
+const race = Promise.race([myfetch, delays]).then((result) => {
+  if (result === randomTime) {
+    console.log(`Делей переміг(${result}ms)`);
+  } else {
+    console.log(`Запит переміг`);
+  }
+});
+
+
+
+//Promisify: confirm
+
+function confirmPromise(text) {
+  return new Promise((resolve, reject) => {
+    const result = confirm(text);
+    if (result) {
+      resolve();
+    } else {
+      reject();
+    }
+  });
+}
+
+confirmPromise("Проміси це складно?").then(
+  () => console.log("не так вже й складно"),
+  () => console.log("respect за посидючість і уважність")
+);
+
+
+
+//Promisify: prompt
+
+function promptPromise(text) {
+  return new Promise((resolve, reject) => {
+    const result = prompt(text);
+    if (result === null) {
+      reject();
+    } else {
+      resolve(result);
+    }
+  });
+}
+
+promptPromise("Як тебе звуть?").then(
+  (name) => console.log(`Тебе звуть ${name}`),
+  () => console.log("Ну навіщо морозитися, нормально ж спілкувалися")
+);
+
+
+
+//Promisify: LoginForm
+
+function Password(parent, open) {
+  const inputPassword = document.createElement("input");
+  inputPassword.placeholder = "Password";
+  inputPassword.oninput = () => this.setValue(inputPassword.value);
+  parent.appendChild(inputPassword);
+
+  const checkVisible = document.createElement("input");
+  checkVisible.type = "checkbox";
+  checkVisible.oninput = () => this.setOpen(checkVisible.checked);
+  parent.appendChild(checkVisible);
+
+  this.getValue = () => inputPassword.value;
+
+  this.setValue = (newValue) => {
+    inputPassword.value = newValue;
+    if (typeof this.onChange === "function") {
+      this.onChange(inputPassword.value);
+    }
+  };
+
+  this.getOpen = () => open;
+
+  this.setOpen = (newOpen) => {
+    open = newOpen;
+    if (open) {
+      inputPassword.type = "text";
+      checkVisible.checked = true;
+    } else {
+      inputPassword.type = "password";
+      checkVisible.checked = false;
+    }
+    if (typeof this.onOpenChange === "function") {
+      this.onOpenChange(open);
+    }
+  };
+
+  this.setStyle = (newStyle) => {
+    inputPassword.style.border = newStyle;
+    checkVisible.style.marginRight = "10px";
+  };
+
+  this.setOpen(open);
+
+  this.setStyle("1px solid grey");
+}
+
+function LoginForm(parent, open) {
+  const inputLogin = document.createElement("input");
+  inputLogin.placeholder = "Login";
+  inputLogin.oninput = () => {
+    this.setLogin(inputLogin.value);
+    this.disabledButton();
+  };
+  parent.appendChild(inputLogin);
+
+  const inputPass = new Password(parent, open);
+  inputPass.onChange = () => {
+    this.disabledButton();
+  };
+
+  const submitButton = document.createElement("input");
+  submitButton.type = "submit";
+  submitButton.value = "Відправити";
+  submitButton.onclick = () => {
+    console.log(
+      `Sending login and password: ${this.getLogin()}, ${inputPass.getValue()}`
+    );
+    this.setLogin("");
+    inputPass.setValue("");
+    this.disabledButton();
+  };
+  parent.appendChild(submitButton);
+
+  this.getLogin = () => inputLogin.value;
+
+  this.getPassword = () => inputPass.getValue();
+
+  this.setLogin = (newLogin) => {
+    inputLogin.value = newLogin;
+  };
+
+  this.disabledButton = () => {
+    if (this.getLogin().length < 1 || inputPass.getValue().length < 1) {
+      submitButton.disabled = true;
+    } else {
+      submitButton.disabled = false;
+    }
+  };
+  this.disabledButton();
+}
+
+function loginPromise(parent) {
+  function executor(resolve, reject) {
+    const form = new LoginForm(parent);
+    const login = form.getLogin();
+    const password = form.getPassword();
+    resolve({ login, password });
+  }
+  return new Promise(executor);
+}
+
+loginPromise(document.body).then(({ login, password }) =>
+  console.log(`Ви ввели ${login} та ${password}`)
+);
