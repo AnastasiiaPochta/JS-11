@@ -16,4 +16,60 @@ function jsonPost(url, data) {
   });
 }
 
-jsonPost("http://students.a-level.com.ua:10012", {func: 'addMessage', nick: "Anon", message: 'rrrrrrr'})
+const form = document.createElement("form");
+
+const nickInput = document.createElement("input");
+nickInput.type = "text";
+nickInput.placeholder = "Ім'я користувача";
+
+const messageInput = document.createElement("input");
+messageInput.type = "text";
+messageInput.placeholder = "Повідомлення";
+
+const submitButton = document.createElement("input");
+submitButton.type = "submit";
+submitButton.value = "Надіслати";
+submitButton.onclick = async () => {
+  event.preventDefault();
+  const response = await jsonPost("http://students.a-level.com.ua:10012", {
+    func: "addMessage",
+    nick: nickInput.value,
+    message: messageInput.value,
+  });
+  console.log(response.nextMessageId);
+  nickInput.value = "";
+  messageInput.value = "";
+};
+
+form.append(nickInput, messageInput, submitButton);
+
+const container = document.getElementById("chat-messages");
+
+container.appendChild(form);
+
+const chatMessages = document.createElement("div");
+
+const messages = async () => {
+  const allMessages = await jsonPost("http://students.a-level.com.ua:10012", {
+    func: "getMessages",
+    messageId: 0,
+  });
+  for (const message of allMessages.data.reverse()) {
+    let messageDiv = document.createElement('div');
+    let nick = document.createElement('span');
+    nick.innerText = `${message.nick}: `;
+    nick.style.fontWeight = 'bold';
+    messageDiv.append(nick);
+    let messageText = document.createElement('span');
+    messageText.innerText = message.message;
+    messageDiv.append(messageText);
+    // let time = document.createElement('span');
+    // time.innerText = message.timestamp;
+    // messageDiv.append(time);
+    console.log(message);
+    chatMessages.append(messageDiv);
+  }
+};
+messages();
+
+container.appendChild(chatMessages);
