@@ -36,7 +36,6 @@ submitButton.onclick = async () => {
     nick: nickInput.value,
     message: messageInput.value,
   });
-  console.log(response.nextMessageId);
   nickInput.value = "";
   messageInput.value = "";
 };
@@ -50,26 +49,28 @@ container.appendChild(form);
 const chatMessages = document.createElement("div");
 
 const messages = async () => {
+  let updateMessageId = 0;
   const allMessages = await jsonPost("http://students.a-level.com.ua:10012", {
     func: "getMessages",
-    messageId: 0,
+    messageId: updateMessageId,
   });
+  updateMessageId = allMessages.nextMessageId;
   for (const message of allMessages.data.reverse()) {
-    let messageDiv = document.createElement('div');
-    let nick = document.createElement('span');
+    let messageDiv = document.createElement("div");
+    let nick = document.createElement("span");
     nick.innerText = `${message.nick}: `;
-    nick.style.fontWeight = 'bold';
+    nick.style.fontWeight = "bold";
     messageDiv.append(nick);
-    let messageText = document.createElement('span');
+    let messageText = document.createElement("span");
     messageText.innerText = message.message;
     messageDiv.append(messageText);
     // let time = document.createElement('span');
     // time.innerText = message.timestamp;
     // messageDiv.append(time);
-    console.log(message);
     chatMessages.append(messageDiv);
   }
 };
+
 messages();
 
 container.appendChild(chatMessages);
