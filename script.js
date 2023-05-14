@@ -2,15 +2,16 @@ async function jsonPost(url, data) {
   return await fetch(url, {
     method: "POST",
     body: JSON.stringify(data),
-  }).then((res) => {
-    if (!res.ok) {
-      throw new Error(`${res.status}`);
-    }
-    return res.json();
   })
-  .catch((error) => {
-   console.log(error);
-  });
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`${res.status}`);
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 const form = document.createElement("form");
@@ -81,3 +82,22 @@ async function checkLoop() {
 }
 
 checkLoop();
+
+//domEventPromise
+
+function domEventPromise(element, eventName) {
+  return new Promise((resolve) => {
+    const okey = (event) => {
+      element.removeEventListener(eventName, okey);
+      resolve(event);
+    };
+    element.addEventListener(eventName, okey);
+  });
+}
+
+const knopka = document.createElement("button");
+knopka.innerText = "Клац";
+document.body.prepend(knopka);
+domEventPromise(knopka, "click").then((e) =>
+  console.log("event click happens", e)
+);
