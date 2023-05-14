@@ -1,18 +1,15 @@
-function jsonPost(url, data) {
-  return new Promise((resolve, reject) => {
-    var x = new XMLHttpRequest();
-    x.onerror = () => reject(new Error("jsonPost failed"));
-    //x.setRequestHeader('Content-Type', 'application/json');
-    x.open("POST", url, true);
-    x.send(JSON.stringify(data));
-
-    x.onreadystatechange = () => {
-      if (x.readyState == XMLHttpRequest.DONE && x.status == 200) {
-        resolve(JSON.parse(x.responseText));
-      } else if (x.status != 200) {
-        reject(new Error("status is not 200"));
-      }
-    };
+async function jsonPost(url, data) {
+  return await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error(`${res.status}`);
+    }
+    return res.json();
+  })
+  .catch((error) => {
+   console.log(error);
   });
 }
 
@@ -29,33 +26,39 @@ messageInput.placeholder = "Повідомлення";
 const submitButton = document.createElement("input");
 submitButton.type = "submit";
 submitButton.value = "Надіслати";
-submitButton.onclick = async () => {
-  event.preventDefault();
-  const response = await jsonPost("http://students.a-level.com.ua:10012", {
-    func: "addMessage",
-    nick: nickInput.value,
-    message: messageInput.value,
-  });
-  nickInput.value = "";
-  messageInput.value = "";
-};
+submitButton.onclick = sendAndCheck;
 
 form.append(nickInput, messageInput, submitButton);
-
 const container = document.getElementById("chat-messages");
-
 container.appendChild(form);
+let chatMessages = document.createElement("div");
+container.appendChild(chatMessages);
 
-const chatMessages = document.createElement("div");
+async function sendAndCheck() {
+  event.preventDefault();
+  await sendMessage(nickInput.value, messageInput.value);
+  nickInput.value = "";
+  messageInput.value = "";
+  getMessages();
+}
 
-const messages = async () => {
-  let updateMessageId = 0;
+async function sendMessage(nick, message) {
+  return await jsonPost("http://students.a-level.com.ua:10012", {
+    func: "addMessage",
+    nick,
+    message,
+  });
+}
+
+let updateMessageId = 0;
+
+async function getMessages() {
   const allMessages = await jsonPost("http://students.a-level.com.ua:10012", {
     func: "getMessages",
     messageId: updateMessageId,
   });
   updateMessageId = allMessages.nextMessageId;
-  for (const message of allMessages.data.reverse()) {
+  for (const message of allMessages.data) {
     let messageDiv = document.createElement("div");
     let nick = document.createElement("span");
     nick.innerText = `${message.nick}: `;
@@ -64,13 +67,17 @@ const messages = async () => {
     let messageText = document.createElement("span");
     messageText.innerText = message.message;
     messageDiv.append(messageText);
-    // let time = document.createElement('span');
-    // time.innerText = message.timestamp;
-    // messageDiv.append(time);
-    chatMessages.append(messageDiv);
+    chatMessages.prepend(messageDiv);
   }
-};
+}
 
-messages();
+const delay = (ms) => new Promise((ok) => setTimeout(() => ok(ms), ms));
 
-container.appendChild(chatMessages);
+async function checkLoop() {
+  while (true) {
+    await delay(1000);
+    getMessages();
+  }
+}
+
+checkLoop();
