@@ -1,271 +1,103 @@
-//fetch basic
-
-const fetchBasic = (container, json) => {
-  const table = document.createElement("table");
-  const header = table.insertRow();
-  for (let key in json) {
-    const text = json[key];
-    if (text.length > 0) {
-      const headerCell = document.createElement("th");
-      headerCell.innerHTML = key;
-      header.appendChild(headerCell);
-    }
-  }
-  const data = table.insertRow();
-  for (let key in json) {
-    const text = json[key];
-    if (text.length > 0) {
-      const dataCell = document.createElement("td");
-      if (Array.isArray(text)) {
-        for (let str of text) {
-          const formatter = document.createElement("tr");
-          formatter.innerHTML = str;
-          dataCell.appendChild(formatter);
-        }
-      } else {
-        dataCell.innerHTML = text;
+async function jsonPost(url, data) {
+  return await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`${res.status}`);
       }
-      data.appendChild(dataCell);
-    }
-  }
-  container.appendChild(table);
-};
-
-fetch("https://swapi.dev/api/people/1/")
-  .then((res) => res.json())
-  .then((luke) => fetchBasic(document.body, luke));
-
-
-
-//fetch improved
-
-const fetchImproved = (container, json) => {
-  const table = document.createElement("table");
-  const header = table.insertRow();
-  for (let key in json) {
-    const text = json[key];
-    if (text.length > 0) {
-      const headerCell = document.createElement("th");
-      headerCell.innerHTML = key;
-      header.appendChild(headerCell);
-    }
-  }
-  const data = table.insertRow();
-  for (let key in json) {
-    const text = json[key];
-    if (text.length > 0) {
-      const dataCell = document.createElement("td");
-      if (Array.isArray(text)) {
-        for (let str of text) {
-          if (str.includes("https://swapi.dev/api/")) {
-            const butt = document.createElement("button");
-            butt.innerText = str;
-            butt.onclick = () => {
-              fetch(`${butt.innerText}`)
-                .then((res) => res.json())
-                .then((data) => fetchImproved(butt, data));
-            };
-            dataCell.appendChild(butt);
-          } else {
-            const formatter = document.createElement("tr");
-            formatter.innerHTML = str;
-            dataCell.appendChild(formatter);
-          }
-        }
-      } else {
-        if (text.includes("https://swapi.dev/api/")) {
-          const butt = document.createElement("button");
-          butt.innerText = text;
-          butt.onclick = () => {
-            fetch(`${butt.innerText}`)
-              .then((res) => res.json())
-              .then((data) => fetchImproved(butt, data));
-          };
-          dataCell.appendChild(butt);
-        } else {
-          dataCell.innerHTML = text;
-        }
-      }
-      data.appendChild(dataCell);
-    }
-  }
-  container.appendChild(table);
-};
-
-fetch("https://swapi.dev/api/people/1/")
-  .then((res) => res.json())
-  .then((luke) => fetchImproved(document.body, luke));
-
-
-
-//race
-
-const myfetch = fetch("https://swapi.dev/api/people/1");
-
-function delay(ms) {
-  function executor(fulfill) {
-    setTimeout(() => fulfill(ms), ms);
-  }
-  return new Promise(executor);
+      return res.json();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
-const randomTime = Math.floor(Math.random() * 5000);
+const form = document.createElement("form");
 
-const delays = delay(randomTime);
+const nickInput = document.createElement("input");
+nickInput.type = "text";
+nickInput.placeholder = "Ім'я користувача";
 
-const race = Promise.race([myfetch, delays]).then((result) => {
-  if (result === randomTime) {
-    console.log(`Делей переміг(${result}ms)`);
-  } else {
-    console.log(`Запит переміг`);
-  }
-});
+const messageInput = document.createElement("input");
+messageInput.type = "text";
+messageInput.placeholder = "Повідомлення";
 
+const submitButton = document.createElement("input");
+submitButton.type = "submit";
+submitButton.value = "Надіслати";
+submitButton.onclick = sendAndCheck;
 
+form.append(nickInput, messageInput, submitButton);
+const container = document.getElementById("chat-messages");
+container.appendChild(form);
+let chatMessages = document.createElement("div");
+container.appendChild(chatMessages);
 
-//Promisify: confirm
+async function sendAndCheck() {
+  event.preventDefault();
+  await sendMessage(nickInput.value, messageInput.value);
+  nickInput.value = "";
+  messageInput.value = "";
+  getMessages();
+}
 
-function confirmPromise(text) {
-  return new Promise((resolve, reject) => {
-    const result = confirm(text);
-    if (result) {
-      resolve();
-    } else {
-      reject();
-    }
+async function sendMessage(nick, message) {
+  return await jsonPost("http://students.a-level.com.ua:10012", {
+    func: "addMessage",
+    nick,
+    message,
   });
 }
 
-confirmPromise("Проміси це складно?").then(
-  () => console.log("не так вже й складно"),
-  () => console.log("respect за посидючість і уважність")
-);
+let updateMessageId = 0;
 
+async function getMessages() {
+  const allMessages = await jsonPost("http://students.a-level.com.ua:10012", {
+    func: "getMessages",
+    messageId: updateMessageId,
+  });
+  updateMessageId = allMessages.nextMessageId;
+  for (const message of allMessages.data) {
+    let messageDiv = document.createElement("div");
+    let nick = document.createElement("span");
+    nick.innerText = `${message.nick}: `;
+    nick.style.fontWeight = "bold";
+    messageDiv.append(nick);
+    let messageText = document.createElement("span");
+    messageText.innerText = message.message;
+    messageDiv.append(messageText);
+    chatMessages.prepend(messageDiv);
+  }
+}
 
+const delay = (ms) => new Promise((ok) => setTimeout(() => ok(ms), ms));
 
-//Promisify: prompt
+async function checkLoop() {
+  while (true) {
+    await delay(1000);
+    getMessages();
+  }
+}
 
-function promptPromise(text) {
-  return new Promise((resolve, reject) => {
-    const result = prompt(text);
-    if (result === null) {
-      reject();
-    } else {
-      resolve(result);
-    }
+checkLoop();
+
+//domEventPromise
+
+function domEventPromise(element, eventName) {
+  return new Promise((resolve) => {
+    const okey = (event) => {
+      element.removeEventListener(eventName, okey);
+      resolve(event);
+    };
+    element.addEventListener(eventName, okey);
   });
 }
 
-promptPromise("Як тебе звуть?").then(
-  (name) => console.log(`Тебе звуть ${name}`),
-  () => console.log("Ну навіщо морозитися, нормально ж спілкувалися")
-);
-
-
-
-//Promisify: LoginForm
-
-function Password(parent, open) {
-  const inputPassword = document.createElement("input");
-  inputPassword.placeholder = "Password";
-  inputPassword.oninput = () => this.setValue(inputPassword.value);
-  parent.appendChild(inputPassword);
-
-  const checkVisible = document.createElement("input");
-  checkVisible.type = "checkbox";
-  checkVisible.oninput = () => this.setOpen(checkVisible.checked);
-  parent.appendChild(checkVisible);
-
-  this.getValue = () => inputPassword.value;
-
-  this.setValue = (newValue) => {
-    inputPassword.value = newValue;
-    if (typeof this.onChange === "function") {
-      this.onChange(inputPassword.value);
-    }
-  };
-
-  this.getOpen = () => open;
-
-  this.setOpen = (newOpen) => {
-    open = newOpen;
-    if (open) {
-      inputPassword.type = "text";
-      checkVisible.checked = true;
-    } else {
-      inputPassword.type = "password";
-      checkVisible.checked = false;
-    }
-    if (typeof this.onOpenChange === "function") {
-      this.onOpenChange(open);
-    }
-  };
-
-  this.setStyle = (newStyle) => {
-    inputPassword.style.border = newStyle;
-    checkVisible.style.marginRight = "10px";
-  };
-
-  this.setOpen(open);
-
-  this.setStyle("1px solid grey");
-}
-
-function LoginForm(parent, open) {
-  const inputLogin = document.createElement("input");
-  inputLogin.placeholder = "Login";
-  inputLogin.oninput = () => {
-    this.setLogin(inputLogin.value);
-    this.disabledButton();
-  };
-  parent.appendChild(inputLogin);
-
-  const inputPass = new Password(parent, open);
-  inputPass.onChange = () => {
-    this.disabledButton();
-  };
-
-  const submitButton = document.createElement("input");
-  submitButton.type = "submit";
-  submitButton.value = "Відправити";
-  submitButton.onclick = () => {
-    console.log(
-      `Sending login and password: ${this.getLogin()}, ${inputPass.getValue()}`
-    );
-    this.setLogin("");
-    inputPass.setValue("");
-    this.disabledButton();
-  };
-  parent.appendChild(submitButton);
-
-  this.getLogin = () => inputLogin.value;
-
-  this.getPassword = () => inputPass.getValue();
-
-  this.setLogin = (newLogin) => {
-    inputLogin.value = newLogin;
-  };
-
-  this.disabledButton = () => {
-    if (this.getLogin().length < 1 || inputPass.getValue().length < 1) {
-      submitButton.disabled = true;
-    } else {
-      submitButton.disabled = false;
-    }
-  };
-  this.disabledButton();
-}
-
-function loginPromise(parent) {
-  function executor(resolve, reject) {
-    const form = new LoginForm(parent);
-    const login = form.getLogin();
-    const password = form.getPassword();
-    resolve({ login, password });
-  }
-  return new Promise(executor);
-}
-
-loginPromise(document.body).then(({ login, password }) =>
-  console.log(`Ви ввели ${login} та ${password}`)
+const knopka = document.createElement("button");
+knopka.innerText = "Клац";
+document.body.prepend(knopka);
+domEventPromise(knopka, "click").then((e) =>
+  console.log("event click happens", e)
 );
