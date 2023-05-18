@@ -1,103 +1,91 @@
-async function jsonPost(url, data) {
-  return await fetch(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`${res.status}`);
-      }
-      return res.json();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
+//Світлофор
 
-const form = document.createElement("form");
+const delay = (ms) => new Promise((ok) => setTimeout(ok, ms));
 
-const nickInput = document.createElement("input");
-nickInput.type = "text";
-nickInput.placeholder = "Ім'я користувача";
-
-const messageInput = document.createElement("input");
-messageInput.type = "text";
-messageInput.placeholder = "Повідомлення";
-
-const submitButton = document.createElement("input");
-submitButton.type = "submit";
-submitButton.value = "Надіслати";
-submitButton.onclick = sendAndCheck;
-
-form.append(nickInput, messageInput, submitButton);
-const container = document.getElementById("chat-messages");
-container.appendChild(form);
-let chatMessages = document.createElement("div");
-container.appendChild(chatMessages);
-
-async function sendAndCheck() {
-  event.preventDefault();
-  await sendMessage(nickInput.value, messageInput.value);
-  nickInput.value = "";
-  messageInput.value = "";
-  getMessages();
-}
-
-async function sendMessage(nick, message) {
-  return await jsonPost("http://students.a-level.com.ua:10012", {
-    func: "addMessage",
-    nick,
-    message,
-  });
-}
-
-let updateMessageId = 0;
-
-async function getMessages() {
-  const allMessages = await jsonPost("http://students.a-level.com.ua:10012", {
-    func: "getMessages",
-    messageId: updateMessageId,
-  });
-  updateMessageId = allMessages.nextMessageId;
-  for (const message of allMessages.data) {
-    let messageDiv = document.createElement("div");
-    let nick = document.createElement("span");
-    nick.innerText = `${message.nick}: `;
-    nick.style.fontWeight = "bold";
-    messageDiv.append(nick);
-    let messageText = document.createElement("span");
-    messageText.innerText = message.message;
-    messageDiv.append(messageText);
-    chatMessages.prepend(messageDiv);
-  }
-}
-
-const delay = (ms) => new Promise((ok) => setTimeout(() => ok(ms), ms));
-
-async function checkLoop() {
+async function trafficLight() {
   while (true) {
+    document.getElementById("red").style.backgroundColor = "";
+    document.getElementById("yellow").style.backgroundColor = "";
+    document.getElementById("green").style.backgroundColor = "";
+    document.getElementById("green").style.backgroundColor = "green";
+    await delay(3000);
+    document.getElementById("green").style.backgroundColor = "";
+    document.getElementById("yellow").style.backgroundColor = "yellow";
     await delay(1000);
-    getMessages();
+    document.getElementById("yellow").style.backgroundColor = "";
+    document.getElementById("red").style.backgroundColor = "red";
+    await delay(3000);
   }
 }
 
-checkLoop();
+trafficLight();
 
-//domEventPromise
+//gql
 
-function domEventPromise(element, eventName) {
-  return new Promise((resolve) => {
-    const okey = (event) => {
-      element.removeEventListener(eventName, okey);
-      resolve(event);
-    };
-    element.addEventListener(eventName, okey);
+async function gql(endpoint, query, variables) {
+  const result = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ query: query, variables: variables }),
   });
+  const data = await result.json();
+  return data;
 }
 
-const knopka = document.createElement("button");
-knopka.innerText = "Клац";
-document.body.prepend(knopka);
-domEventPromise(knopka, "click").then((e) =>
-  console.log("event click happens", e)
-);
+//перевірка gql
+
+(async () => {
+  const catQuery = `query cats($q: String){
+    CategoryFind(query: $q){
+      _id name
+    }
+}`;
+  const cats = await gql(
+    "http://shop-roles.node.ed.asmer.org.ua/graphql",
+    catQuery,
+    { q: "[{}]" }
+  );
+  console.log(cats); //список категорій з _id name та всім таким іншим
+
+  const loginQuery = `query login($login:String, $password:String){
+    login(login:$login, password:$password)
+  }`;
+
+  const token = await gql(
+    "http://shop-roles.node.ed.asmer.org.ua/graphql",
+    loginQuery,
+    { login: "test457", password: "123123" }
+  );
+  console.log(token);
+})();
+
+//jwtDecode
+
+const jwtDecode = (token) => {
+  try {
+    const arr = token.split(".");
+    const data = arr[1];
+    const decodedData = JSON.parse(atob(data));
+    return decodedData;
+  } catch (e) {
+    return "undefined";
+  }
+};
+
+const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOiI2MzIyMDVhZWI3NGUxZjVmMmVjMWEzMjAiLCJsb2dpbiI6InRlc3Q0NTciLCJhY2wiOlsiNjMyMjA1YWViNzRlMWY1ZjJlYzFhMzIwIiwidXNlciJdfSwiaWF0IjoxNjY4MjcyMTYzfQ.rxV1ki9G6LjT2IPWcqkMeTi_1K9sb3Si8vLB6UDAGdw";
+console.log(jwtDecode(token));
+
+try {
+  console.log(jwtDecode()); //undefined
+  console.log(jwtDecode("дічь")); //undefined
+  console.log(jwtDecode("ey.ey.ey")); //undefined
+  console.log(
+    "до сюди допрацювало, а значить jwtDecode не матюкався в консоль червоним кольором"
+  );
+} finally {
+  console.log("ДЗ, мабуть, закінчено");
+}
