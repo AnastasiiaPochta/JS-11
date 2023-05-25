@@ -106,8 +106,8 @@ const token =
 const store2 = createStore(authReducer);
 store2.subscribe(() => console.log(store2.getState()));
 
-store2.dispatch(actionAuthLogin(token));
-store2.dispatch(actionAuthLogout());
+// store2.dispatch(actionAuthLogin(token));
+// store2.dispatch(actionAuthLogout());
 
 //cartReducer
 
@@ -171,9 +171,7 @@ function cartReducer(state = {}, { type, count, good }) {
 
 const store3 = createStore(cartReducer);
 
-store3.subscribe(() => console.log(store3.getState())); //
-
-console.log(store3.getState()); //{}
+store3.subscribe(() => console.log(store3.getState()));
 
 const actionCartAdd = (good, count = 1) => ({ type: "CART_ADD", count, good });
 const actionCartSub = (good, count = 1) => ({ type: "CART_SUB", count, good });
@@ -181,39 +179,62 @@ const actionCartDel = (good) => ({ type: "CART_DEL", good });
 const actionCartSet = (good, count = 1) => ({ type: "CART_SET", count, good });
 const actionCartClear = () => ({ type: "CART_CLEAR" });
 
-store3.dispatch(actionCartAdd({ _id: "пиво", price: 50 }));
-// {пиво: {good: {_id: 'пиво', price: 50}, count: 1}}
-store3.dispatch(actionCartAdd({ _id: "чіпси", price: 75 }));
-// {
-// пиво: {good: {_id: 'пиво', price: 50}, count: 1},
-// чіпси: {good: {_id: 'чіпси', price: 75}, count: 1},
-//}
-store3.dispatch(actionCartAdd({ _id: "пиво", price: 50 }, 5));
-// {
-// пиво: {good: {_id: 'пиво', price: 50}, count: 6},
-// чіпси: {good: {_id: 'чіпси', price: 75}, count: 1},
-//}
-store3.dispatch(actionCartSet({ _id: "чіпси", price: 75 }, 2));
-// {
-// пиво: {good: {_id: 'пиво', price: 50}, count: 6},
-// чіпси: {good: {_id: 'чіпси', price: 75}, count: 2},
-//}
+// store3.dispatch(actionCartAdd({ _id: "пиво", price: 50 }));
+// // {пиво: {good: {_id: 'пиво', price: 50}, count: 1}}
+// store3.dispatch(actionCartAdd({ _id: "чіпси", price: 75 }));
+// // {
+// // пиво: {good: {_id: 'пиво', price: 50}, count: 1},
+// // чіпси: {good: {_id: 'чіпси', price: 75}, count: 1},
+// //}
+// store3.dispatch(actionCartAdd({ _id: "пиво", price: 50 }, 5));
+// // {
+// // пиво: {good: {_id: 'пиво', price: 50}, count: 6},
+// // чіпси: {good: {_id: 'чіпси', price: 75}, count: 1},
+// //}
+// store3.dispatch(actionCartSet({ _id: "чіпси", price: 75 }, 2));
+// // {
+// // пиво: {good: {_id: 'пиво', price: 50}, count: 6},
+// // чіпси: {good: {_id: 'чіпси', price: 75}, count: 2},
+// //}
 
-store3.dispatch(actionCartSub({ _id: "пиво", price: 50 }, 4));
-// {
-// пиво: {good: {_id: 'пиво', price: 50}, count: 2},
-// чіпси: {good: {_id: 'чіпси', price: 75}, count: 2},
-//}
+// store3.dispatch(actionCartSub({ _id: "пиво", price: 50 }, 4));
+// // {
+// // пиво: {good: {_id: 'пиво', price: 50}, count: 2},
+// // чіпси: {good: {_id: 'чіпси', price: 75}, count: 2},
+// //}
 
-store3.dispatch(actionCartDel({ _id: "чіпси", price: 75 }));
-// {
-// пиво: {good: {_id: 'пиво', price: 50}, count: 2},
-//}
+// store3.dispatch(actionCartDel({ _id: "чіпси", price: 75 }));
+// // {
+// // пиво: {good: {_id: 'пиво', price: 50}, count: 2},
+// //}
 
-store3.dispatch(actionCartClear()); // {}
+// store3.dispatch(actionCartClear()); // {}
 
+
+
+////////////////////////////
+//localStoredReducer
+function localStoredReducer(originalReducer, localStorageKey) {
+  let firstRun = true;
+  return function wrapper(state, action) {
+    if (firstRun) {
+      firstRun = false;
+      const data = localStorage.getItem(localStorageKey);
+      const parcedData = JSON.parse(data);
+      if (parcedData) {
+        return parcedData;
+      }
+    }
+    const newState = originalReducer(state, action);
+    localStorage.setItem(localStorageKey, JSON.stringify(newState));
+    return newState;
+  };
+}
+
+const store4 = createStore(localStoredReducer(cartReducer, "cart"));
+
+////////////////////////////
 //gql
-
 function getGql(url = "http://shop-roles.node.ed.asmer.org.ua/graphql") {
   return async function gql(query, variables = {}) {
     const headers = {
@@ -231,7 +252,7 @@ function getGql(url = "http://shop-roles.node.ed.asmer.org.ua/graphql") {
     const data = await result.json();
     if (data.errors) {
       throw new Error(JSON.stringify(data.errors));
-    };
+    }
     return Object.values(data)[0];
   };
 }
@@ -338,3 +359,8 @@ const actionOrder = (count, id) => {
 // store.dispatch(actionGoodOne("62d3099ab74e1f5f2ec1a125"));
 // store.dispatch(actionHistory());
 // store.dispatch(actionOrder(4, '62d3099ab74e1f5f2ec1a125'));
+
+
+
+////////////////////////////
+//DOM - categories
