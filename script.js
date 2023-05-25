@@ -214,23 +214,29 @@ store3.dispatch(actionCartClear()); // {}
 
 //gql
 
-async function gql(query, variables) {
-  const url = "http://shop-roles.node.ed.asmer.org.ua/graphql";
-  const result = await fetch(url, {
-    method: "POST",
-    headers: {
+function getGql(url = "http://shop-roles.node.ed.asmer.org.ua/graphql") {
+  return async function gql(query, variables = {}) {
+    const headers = {
       "Content-Type": "application/json",
       Accept: "application/json",
-    },
-    body: JSON.stringify({ query: query, variables: variables }),
-  });
-  const data = await result.json();
-  return data;
+    };
+    if (localStorage.authToken) {
+      headers.Authorization = "Bearer " + localStorage.authToken;
+    }
+    const result = await fetch(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ query: query, variables: variables }),
+    });
+    const data = await result.json();
+    if (data.errors) {
+      throw new Error(JSON.stringify(data.errors));
+    };
+    return Object.values(data)[0];
+  };
 }
 
-if (localStorage.authToken) {
-  headers.Authorization = "Bearer " + localStorage.authToken;
-}
+const gql = getGql();
 
 //Кореневі категорії
 const gqlRootCats = () => {
