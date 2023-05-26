@@ -68,7 +68,7 @@ const actionPromise = (key, promise) => async (dispatch) => {
 
 const store = createStore(promiseReducer);
 
-store.subscribe(() => console.log(store.getState()));
+store.subscribe(() => console.log(store.getState().payload));
 
 //authReducer
 
@@ -364,3 +364,24 @@ const actionOrder = (count, id) => {
 
 ////////////////////////////
 //DOM - categories
+
+const aside = document.getElementById("categories");
+
+const categoriesBuilder = () => {
+  if (store.getState().error) {
+    console.log(store.getState().error)
+  }
+  if (store.getState().rootCats.status === 'FULFILLED') {
+    const rootCats = store.getState().rootCats.payload.CategoryFind;    ;
+    console.log(rootCats)
+    for (let i of rootCats) {
+      console.log(i);
+      const a = document.createElement("a");
+      a.innerText = i.name;
+      a.href = i._id;
+      aside.appendChild(a);
+    }
+  }
+}
+store.subscribe(categoriesBuilder);
+store.dispatch(actionRootCats());
