@@ -210,8 +210,6 @@ const actionCartClear = () => ({ type: "CART_CLEAR" });
 
 // store3.dispatch(actionCartClear()); // {}
 
-
-
 ////////////////////////////
 //localStoredReducer
 function localStoredReducer(originalReducer, localStorageKey) {
@@ -235,7 +233,10 @@ const store4 = createStore(localStoredReducer(cartReducer, "cart"));
 
 ////////////////////////////
 //gql
-function getGql(url = "http://shop-roles.node.ed.asmer.org.ua/graphql") {
+
+const url = "http://shop-roles.node.ed.asmer.org.ua/graphql/";
+
+function getGql(url = "http://shop-roles.node.ed.asmer.org.ua/graphql/") {
   return async function gql(query, variables = {}) {
     const headers = {
       "Content-Type": "application/json",
@@ -257,7 +258,7 @@ function getGql(url = "http://shop-roles.node.ed.asmer.org.ua/graphql") {
   };
 }
 
-const gql = getGql();
+const gql = getGql(url);
 
 //Кореневі категорії
 const gqlRootCats = () => {
@@ -360,28 +361,87 @@ const actionOrder = (count, id) => {
 // store.dispatch(actionHistory());
 // store.dispatch(actionOrder(4, '62d3099ab74e1f5f2ec1a125'));
 
-
-
 ////////////////////////////
 //DOM - categories
 
 const aside = document.getElementById("categories");
 
+let prevRootCats = null;
+
 const categoriesBuilder = () => {
-  if (store.getState().error) {
-    console.log(store.getState().error)
+  if (store.getState().rootCats.error) {
+    console.log(store.getState().rootCats.error);
   }
-  if (store.getState().rootCats.status === 'FULFILLED') {
-    const rootCats = store.getState().rootCats.payload.CategoryFind;    ;
-    console.log(rootCats)
-    for (let i of rootCats) {
-      console.log(i);
-      const a = document.createElement("a");
-      a.innerText = i.name;
-      a.href = i._id;
-      aside.appendChild(a);
+  if (store.getState().rootCats.status === "FULFILLED") {
+    const rootCats = store.getState().rootCats.payload.CategoryFind;
+    if (JSON.stringify(rootCats) !== JSON.stringify(prevRootCats)) {
+      for (let i of rootCats) {
+        const a = document.createElement("a");
+        a.innerText = i.name;
+        a.href = `#/category/${i._id}`;
+        aside.appendChild(a);
+      }
+      prevRootCats = [...rootCats];
     }
   }
-}
+};
 store.subscribe(categoriesBuilder);
 store.dispatch(actionRootCats());
+
+//DOM - one category
+
+const content = document.getElementById("content");
+
+const categoryBuilder = () => {
+  if (store.getState().oneCat && store.getState().oneCat.error) {
+    console.log(store.getState().oneCat.error);
+  }
+  if (
+    store.getState().oneCat &&
+    store.getState().oneCat.status === "FULFILLED"
+  ) {
+    const oneCat = store.getState().oneCat.payload.CategoryFindOne;
+    content.innerHTML = "";
+    const catName = document.createElement("h2");
+    catName.innerText = oneCat.name;
+    content.appendChild(catName);
+    for (let good of oneCat.goods) {
+      const a = document.createElement("a");
+      a.href = `#/good/${good._id}`;
+      const divGood = document.createElement("div");
+      const goodName = document.createElement("h5");
+      goodName.innerText = good.name;
+      divGood.appendChild(goodName);
+      const goodPrice = document.createElement("p");
+      goodPrice.innerText = `Ціна: ${good.price} грн`;
+      divGood.appendChild(goodPrice);
+      const goodPhoto = document.createElement("img");
+      const imageUrl = `http://shop-roles.node.ed.asmer.org.ua/` + good.images[0].url;
+      goodPhoto.src = imageUrl;
+      divGood.appendChild(goodPhoto);
+      a.appendChild(divGood);
+      content.appendChild(a);
+    }
+    console.log(oneCat);
+  }
+};
+store.subscribe(categoryBuilder);
+
+onhashchange = () => {
+  console.log(window.location.hash);
+  const name = window.location.hash.split("/")[1];
+  const id = window.location.hash.split("/")[2];
+  if (name === "category") {
+    store.dispatch(actionCatOne(id));
+  }
+  if (name === "good") {
+  }
+  if (name === "history") {
+  }
+  if (name === "register") {
+  }
+  if (name === "login") {
+  }
+  if (name === "cart") {
+  }
+};

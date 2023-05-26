@@ -78,25 +78,55 @@ header {
 }
 
 main {
-  flex: 2 1 100%;
+  flex: 1 1 100%;
+  width: 100%;
   display: flex;
   align-items: stretch;
-  justify-content: space-between
 }
 
-aside {
+#categories {
   flex: 1 1 360px;
+  min-width: 200px;
   background-color: rgb(207, 243, 231);
   display: flex;
   flex-flow: column wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
-.content {
+#content {
+  flex: 1 1 100%;
+  max-width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: stretch;
+  justify-content: center;
+}
+
+#content h2 {
   flex: 1 1 100%;
   display: flex;
-  align-items: start;
   justify-content: center;
+  align-items: flex-start;
+}
+
+#content a {
+  flex: 1 1 27%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#content a div {
+  flex: 1 1 100%;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#content a div img{
+  width: 290px;
+  height: auto;
 }
 
 footer {
